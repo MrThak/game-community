@@ -37,9 +37,9 @@ export default function GlobalHeader() {
                 <div className="flex items-center gap-4">
                     <Link href="/" className="flex items-center gap-2">
                         <div className="w-10 h-10 bg-gradient-to-tr from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20">
-                            <span className="font-bold text-xl text-white">G</span>
+                            <span className="font-bold text-xl text-white">T</span>
                         </div>
-                        <span className="font-bold text-xl tracking-tight hidden sm:block">GameHub</span>
+                        <span className="font-bold text-xl tracking-tight hidden sm:block">Thak Talker</span>
                     </Link>
                 </div>
 

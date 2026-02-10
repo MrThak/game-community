@@ -14,13 +14,13 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://gamehub-community.vercel.app'
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://thaktalker.vercel.app'
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: "Game Community - ศูนย์รวมคนรักเกม",
-    template: "%s | Game Community"
+    default: "Thak Talker - ศูนย์รวมคนรักเกม",
+    template: "%s | Thak Talker"
   },
   description: "ชุมชนคนเล่นเกม แลกเปลี่ยนความคิดเห็น รีวิวเกม และพูดคุยเรื่องเกมที่คุณชื่นชอบ",
   keywords: ["เกม", "ชุมชนเกม", "รีวิวเกม", "Game Community", "Board Game", "Mobile Game"],
@@ -28,9 +28,9 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'th_TH',
     url: baseUrl,
-    title: "Game Community - ศูนย์รวมคนรักเกม",
+    title: "Thak Talker - ศูนย์รวมคนรักเกม",
     description: "ชุมชนคนเล่นเกม แลกเปลี่ยนความคิดเห็น และพูดคุยเรื่องเกมที่คุณชื่นชอบ",
-    siteName: "Game Community",
+    siteName: "Thak Talker",
     images: [
       {
         url: '/og-image.jpg', // You should add an og-image.jpg to public folder later
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: "Game Community - ศูนย์รวมคนรักเกม",
+    title: "Thak Talker - ศูนย์รวมคนรักเกม",
     description: "ชุมชนคนเล่นเกม แลกเปลี่ยนความคิดเห็น และพูดคุยเรื่องเกมที่คุณชื่นชอบ",
     images: ['/og-image.jpg'],
   },
