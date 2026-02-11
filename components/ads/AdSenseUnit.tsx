@@ -13,7 +13,7 @@ type AdSenseUnitProps = {
 }
 
 export default function AdSenseUnit({
-    client,
+    client = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || '',
     slot,
     format = 'auto',
     responsive = true,
@@ -21,7 +21,7 @@ export default function AdSenseUnit({
     className,
     label = 'Advertisement'
 }: AdSenseUnitProps) {
-    const adRef = useRef<HTMLModElement>(null)
+    const adRef = useRef<HTMLElement>(null)
 
     useEffect(() => {
         try {

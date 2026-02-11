@@ -27,8 +27,8 @@ export default async function Home() {
         <aside className="hidden xl:flex w-[300px] shrink-0 p-4 flex-col gap-4">
           <div className="rounded-xl p-4 h-[600px] flex flex-col items-center justify-center text-center sticky top-24 w-full bg-[#050b14]/80 neon-border backdrop-blur-sm">
             <AdSenseUnit
-              client="ca-pub-XXXXXXXXXXXXXXXX" // TODO: Replace with your Client ID
-              slot="1234567890"               // TODO: Replace with your Slot ID (Left Sidebar)
+              client={process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || ''}
+              slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_LEFT || ''}
               style={{ display: 'block', width: '160px', height: '600px' }}
               label="AdSpace (Left)"
               className="w-full h-full flex items-center justify-center"
@@ -94,8 +94,8 @@ export default async function Home() {
           {/* Ad Placeholder */}
           <div className="rounded-xl p-4 h-[300px] flex flex-col items-center justify-center text-center sticky top-24 w-full bg-[#050b14]/80 neon-border backdrop-blur-sm">
             <AdSenseUnit
-              client="ca-pub-XXXXXXXXXXXXXXXX" // TODO: Replace with your Client ID
-              slot="0987654321"               // TODO: Replace with your Slot ID (Right Sidebar)
+              client={process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || ''}
+              slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_RIGHT || ''}
               style={{ display: 'block', width: '300px', height: '250px' }}
               label="AdSpace (Right)"
               className="w-full h-full flex items-center justify-center"
