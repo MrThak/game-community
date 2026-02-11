@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
-import CharacterCard, { Character } from './CharacterCard'
+import CharacterCard from './CharacterCard'
+import { Character } from '@/types/character'
 import { Search, Loader2, Plus, DatabaseBackup } from 'lucide-react'
 import { useAdmin } from '@/hooks/useAdmin'
 import Link from 'next/link'
