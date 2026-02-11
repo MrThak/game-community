@@ -28,7 +28,7 @@ export default async function Home() {
 
         {/* Left Sidebar: Ads */}
         <aside className="hidden xl:flex w-[300px] shrink-0 p-4 flex-col gap-4">
-          <div className="rounded-xl p-4 h-[600px] flex flex-col items-center justify-center text-center sticky top-24 w-full">
+          <div className="rounded-xl p-4 h-[600px] flex flex-col items-center justify-center text-center sticky top-24 w-full bg-[#050b14]/80 neon-border backdrop-blur-sm">
             <AdSenseUnit
               client="ca-pub-XXXXXXXXXXXXXXXX" // TODO: Replace with your Client ID
               slot="1234567890"               // TODO: Replace with your Slot ID (Left Sidebar)
@@ -41,8 +41,8 @@ export default async function Home() {
 
         {/* Main Content: Game Grid */}
         <div className="flex-1 px-4 py-4 max-w-[1920px] mx-auto w-full">
-          <div className="flex items-center justify-between mb-6 pb-4">
-            <h2 className="text-xl font-semibold text-white flex items-center gap-2">
+          <div className="flex items-center justify-between mb-6 pb-4 border-b border-blue-500/20">
+            <h2 className="text-xl font-semibold text-white flex items-center gap-2 neon-text">
               <Gamepad2 className="w-6 h-6 text-blue-400" />
               รายชื่อเกม ({games?.length || 0})
             </h2>
@@ -57,9 +57,9 @@ export default async function Home() {
                   href={`/games/${typedGame.id}`}
                   className="group flex flex-col items-center gap-3 transition-all duration-300 hover:scale-[1.05] hover:-translate-y-1"
                 >
-                  <div className="aspect-square w-full bg-slate-800/50 relative overflow-hidden rounded-[1.5rem] shadow-lg shadow-black/20 group-hover:shadow-blue-500/20 transition-all duration-300">
+                  <div className="aspect-square w-full bg-slate-900/50 relative overflow-hidden rounded-[1.5rem] neon-border group-hover:shadow-blue-500/50 transition-all duration-300">
                     {typedGame.icon_url === '-' || !typedGame.icon_url ? (
-                      <div className="w-full h-full flex items-center justify-center bg-slate-800">
+                      <div className="w-full h-full flex items-center justify-center bg-slate-900">
                         <Gamepad2 className="w-10 h-10 text-slate-600" />
                       </div>
                     ) : (
@@ -72,7 +72,7 @@ export default async function Home() {
                   </div>
 
                   <div className="text-center px-1 w-full">
-                    <h3 className="font-bold text-sm text-slate-300 group-hover:text-white transition-colors truncate">
+                    <h3 className="font-bold text-sm text-slate-300 group-hover:text-blue-400 transition-colors truncate">
                       {typedGame.name}
                     </h3>
                   </div>
@@ -81,7 +81,7 @@ export default async function Home() {
             })}
 
             {(!games || games.length === 0) && (
-              <div className="col-span-full text-center py-20 bg-slate-900/30 rounded-3xl border border-slate-800/50 dashed">
+              <div className="col-span-full text-center py-20 bg-slate-900/30 rounded-3xl border border-blue-500/30 dashed neon-border">
                 <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-slate-800/50 mb-4 animate-bounce">
                   <Gamepad2 className="w-10 h-10 text-slate-500" />
                 </div>
@@ -95,7 +95,7 @@ export default async function Home() {
         {/* Right Sidebar: AdSense & Widgets */}
         <aside className="hidden lg:flex w-[300px] shrink-0 p-4 flex-col gap-6">
           {/* Ad Placeholder */}
-          <div className="rounded-xl p-4 h-[300px] flex flex-col items-center justify-center text-center sticky top-24 w-full">
+          <div className="rounded-xl p-4 h-[300px] flex flex-col items-center justify-center text-center sticky top-24 w-full bg-[#050b14]/80 neon-border backdrop-blur-sm">
             <AdSenseUnit
               client="ca-pub-XXXXXXXXXXXXXXXX" // TODO: Replace with your Client ID
               slot="0987654321"               // TODO: Replace with your Slot ID (Right Sidebar)
@@ -105,10 +105,10 @@ export default async function Home() {
             />
           </div>
 
-          <div className="bg-gradient-to-br from-blue-900/20 to-indigo-900/20 rounded-xl p-6 border border-blue-500/10 sticky top-[340px] backdrop-blur-sm">
-            <h3 className="font-bold text-white mb-2">ลงโฆษณากับเรา?</h3>
+          <div className="bg-gradient-to-br from-blue-900/20 to-indigo-900/20 rounded-xl p-6 border border-blue-500/30 sticky top-[340px] backdrop-blur-sm neon-border">
+            <h3 className="font-bold text-white mb-2 neon-text">ลงโฆษณากับเรา?</h3>
             <p className="text-sm text-slate-400 mb-4">ติดต่อทีมงานเพื่อโปรโมทเกมของคุณในพื้นที่นี้</p>
-            <button className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors shadow-lg shadow-blue-900/20">
+            <button className="w-full py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-sm font-medium transition-all shadow-lg shadow-blue-600/20 hover:shadow-blue-500/40">
               ติดต่อโฆษณา
             </button>
           </div>

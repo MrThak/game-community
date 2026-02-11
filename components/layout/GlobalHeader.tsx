@@ -31,7 +31,7 @@ export default function GlobalHeader() {
     }
 
     return (
-        <header className="sticky top-0 z-50 w-full bg-slate-950/90 backdrop-blur supports-[backdrop-filter]:bg-slate-950/60 text-slate-100 shadow-sm shadow-black/20">
+        <header className="sticky top-0 z-50 w-full bg-[#050b14]/90 backdrop-blur supports-[backdrop-filter]:bg-[#050b14]/80 text-slate-100 neon-border border-b-0 border-x-0 border-t-0 !border-b !border-b-blue-500/50 mb-8">
             <div className="container mx-auto px-4 h-16 flex items-center justify-between">
                 {/* Logo Area */}
                 <div className="flex items-center gap-4">
