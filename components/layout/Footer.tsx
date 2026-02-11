@@ -9,9 +9,7 @@ export default function Footer() {
                 <p>&copy; {new Date().getFullYear()} GameHub. All rights reserved.</p>
 
                 <div className="flex items-center gap-6">
-                    <a href="#" className="hover:text-blue-400 transition-colors">About Us</a>
-                    <a href="#" className="hover:text-blue-400 transition-colors">Privacy Policy</a>
-                    <a href="#" className="hover:text-blue-400 transition-colors">Contact</a>
+                    {/* Links removed as per request */}
                 </div>
             </div>
         </footer>

@@ -7,4 +7,6 @@ export interface Post {
     username?: string
     title?: string
     image_url?: string
+    likes_count?: number
+    user_has_liked?: boolean
 }

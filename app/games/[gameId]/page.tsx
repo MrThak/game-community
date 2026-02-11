@@ -6,13 +6,13 @@ import { notFound } from 'next/navigation'
 // Force dynamic rendering to fetch fresh data
 export const dynamic = 'force-dynamic'
 
-export default async function GamePage({ params }: { params: Promise<{ id: string }> }) {
-    const { id } = await params
+export default async function GamePage({ params }: { params: Promise<{ gameId: string }> }) {
+    const { gameId } = await params
 
     const { data: game, error } = await supabase
         .from('games')
         .select('*')
-        .eq('id', id)
+        .eq('id', gameId)
         .single()
 
     if (error || !game) {

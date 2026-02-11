@@ -3,11 +3,12 @@ import { User } from 'lucide-react'
 interface UserAvatarProps {
     avatarUrl?: string | null
     alt?: string
+    name?: string
     size?: 'sm' | 'md' | 'lg'
     className?: string
 }
 
-export default function UserAvatar({ avatarUrl, alt = 'User', size = 'md', className = '' }: UserAvatarProps) {
+export default function UserAvatar({ avatarUrl, alt = 'User', name, size = 'md', className = '' }: UserAvatarProps) {
     const sizeClasses = {
         sm: 'w-8 h-8',
         md: 'w-10 h-10',

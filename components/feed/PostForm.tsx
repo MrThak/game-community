@@ -43,9 +43,9 @@ export default function PostForm({ gameId, onPostCreated }: { gameId: string, on
             setContent('')
             setImageUrl('')
             onPostCreated()
-        } catch (error) {
+        } catch (error: any) {
             console.error('Error creating post:', error)
-            alert('Failed to post. Please try again.')
+            alert(`Failed to post: ${error.message || 'Unknown error'}`)
         } finally {
             setIsSubmitting(false)
         }
