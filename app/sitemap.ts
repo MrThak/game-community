@@ -8,9 +8,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://thaktalker.vercel.app' // Fallback URL
 
     // Get all games
-    const { data: games } = await supabase
+    const { data: games, error } = await supabase
         .from('games')
-        .select('id, updated_at')
+        .select('*')
+
+    if (error) {
+        console.error('Sitemap Error:', error)
+    }
 
     const gameUrls = (games || []).map((game) => ({
         url: `${baseUrl}/games/${game.id}`,

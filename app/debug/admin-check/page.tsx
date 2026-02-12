@@ -13,12 +13,15 @@ export default async function DebugPage() {
     let errorMsg = ''
 
     try {
-        const { data, error } = await supabase.from('games').select('id').limit(1)
+        const { data, error } = await supabase.from('games').select('*')
         if (error) {
             dbStatus = 'Error: ' + error.message
             errorMsg = JSON.stringify(error, null, 2)
         } else {
-            dbStatus = 'Connected! (Table accessible)'
+            dbStatus = `Connected! Found ${data?.length || 0} games`
+            if (data && data.length > 0) {
+                dbStatus += ` (First Game: ${data[0].name})`
+            }
         }
     } catch (e: any) {
         dbStatus = 'Connection Failed'
@@ -41,8 +44,8 @@ export default async function DebugPage() {
             </div>
 
             <div className="mb-6 p-4 border border-blue-500 rounded">
-                <h2 className="text-xl mb-2">2. Database Connection (Sitemap)</h2>
-                <p className={dbStatus.includes('Connected') ? 'text-green-400' : 'text-red-500'}>
+                <h2 className="text-xl mb-2">2. Database Connection (Sitemap Logic)</h2>
+                <p className={dbStatus.includes('Connected') && !dbStatus.includes('Found 0') ? 'text-green-400' : 'text-red-500'}>
                     Status: {dbStatus}
                 </p>
                 {errorMsg && <pre className="mt-2 text-xs text-red-300 bg-black p-2 overflow-auto">{errorMsg}</pre>}
