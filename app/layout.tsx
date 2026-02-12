@@ -50,7 +50,17 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
-  }
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  verification: {
+    google: '-bTtf5JAYAHRDtPF0SZVz3vuqr8q3TgT_QpXzS6Sh-k',
+  },
 };
 
 export default function RootLayout({
@@ -71,6 +81,7 @@ export default function RootLayout({
 
         {/* Google AdSense Global Script */}
         {/* Google AdSense Global Script */}
+        {/* Google AdSense Global Script */}
         {process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID && (
           <Script
             id="adsbygoogle-init"
@@ -80,6 +91,25 @@ export default function RootLayout({
             strategy="afterInteractive"
           />
         )}
+
+        {/* JSON-LD Structured Data */}
+        <Script
+          id="json-ld"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              "name": "Thak Talker",
+              "url": "https://thaktalker.vercel.app",
+              "potentialAction": {
+                "@type": "SearchAction",
+                "target": "https://thaktalker.vercel.app/?q={search_term_string}",
+                "query-input": "required name=search_term_string"
+              }
+            })
+          }}
+        />
       </body>
     </html>
   );
