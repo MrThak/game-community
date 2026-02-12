@@ -2,6 +2,7 @@ import { MetadataRoute } from 'next'
 import { supabase } from '@/lib/supabase'
 
 export const revalidate = 3600 // Revalidate every hour
+// Force rebuild for env vars update
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://thaktalker.vercel.app' // Fallback URL
