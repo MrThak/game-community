@@ -4,7 +4,7 @@ import { supabase } from '@/lib/supabase'
 export const revalidate = 3600 // Revalidate every hour
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://gamehub-community.vercel.app' // Fallback URL
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://thaktalker.vercel.app' // Fallback URL
 
     // Get all games
     const { data: games } = await supabase
