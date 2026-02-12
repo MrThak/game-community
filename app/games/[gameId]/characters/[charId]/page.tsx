@@ -3,6 +3,7 @@ import { Character } from '@/types/character'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, Sword, Shield, Zap, Star, Heart, Award } from 'lucide-react'
+import EditCharacterButton from '@/components/game/EditCharacterButton'
 
 export const dynamic = 'force-dynamic'
 
@@ -39,6 +40,11 @@ export default async function CharacterDetailPage({ params }: { params: Promise<
                     <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
                     <span>กลับไปหน้ารวม</span>
                 </Link>
+
+                {/* Admin Controls */}
+                <div className="flex justify-end mb-4">
+                    <EditCharacterButton gameId={gameId} characterId={charId} />
+                </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                     {/* Left: Character Image & Basic Info */}
