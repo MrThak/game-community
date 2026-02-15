@@ -56,7 +56,7 @@ export default function PostForm({ gameId, onPostCreated }: { gameId: string, on
             <div className="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-800 mb-6 text-center">
                 <p className="text-gray-500 mb-4">เข้าสู่ระบบเพื่อเริ่มพูดคุยกับชุมชน</p>
                 <div className="max-w-xs mx-auto">
-                    <p className="text-sm text-blue-500">กรุณาเข้าสู่ระบบที่เมนูทางด้านซ้าย</p>
+                    <p className="text-sm text-blue-500">กรุณาเข้าสู่ระบบ</p>
                 </div>
             </div>
         )

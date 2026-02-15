@@ -118,7 +118,10 @@ export default function GameCommunity({ game }: { game: Game }) {
                 {activeTab === 'create' && (
                     <div className="animate-fade-in">
                         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">เขียนโพสต์ใหม่</h2>
-                        <PostForm gameId={game.id} onPostCreated={() => setActiveTab('feed')} />
+                        <PostForm gameId={game.id} onPostCreated={() => {
+                            // Keep user on create tab, just clear form (handled inside PostForm)
+                            // Maybe trigger a toast here if we had one
+                        }} />
                     </div>
                 )}
 
