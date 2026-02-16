@@ -38,14 +38,13 @@ export default function TeamBuilder({ gameId, tableName, characterTableName, pet
             setCharacters(allChars)
             setPets(petRes.data || [])
 
-            // If editing, populate formation
-            if (initialData?.formation) {
-                // Map image URLs back to characters if possible, or just mock them if we don't have them
-                // Storing image URLs directly makes it tricky to map back to Character objects
-                // In TeamBuilder, we need Character objects for the UI.
-                // We'll try to find character objects matching the images.
-                const findCharsByImages = (urls: string[]) => {
-                    return urls.map(url => allChars.find(c => c.image_url === url)).filter(Boolean) as Character[]
+            // If editing, populate formation accurately
+            if (initialData?.formation && allChars.length > 0) {
+                const findCharsByImages = (urls: (string | null)[]) => {
+                    return urls.map(url => {
+                        if (!url) return null
+                        return allChars.find(c => c.image_url === url)
+                    }).filter(Boolean) as Character[]
                 }
                 setFrontRow(findCharsByImages(initialData.formation.front || []))
                 setBackRow(findCharsByImages(initialData.formation.back || []))
@@ -93,6 +92,7 @@ export default function TeamBuilder({ gameId, tableName, characterTableName, pet
             const { data: { session } } = await supabase.auth.getSession()
             if (!session) return alert('กรุณาเข้าสู่ระบบก่อน')
 
+            const currentPet = pets.find(p => p.id === petId)
             const teamData = {
                 name,
                 mode,
@@ -104,7 +104,7 @@ export default function TeamBuilder({ gameId, tableName, characterTableName, pet
                     back: backRow.map(c => c.image_url || '')
                 },
                 pet_id: petId,
-                pet_image_url: selectedPet?.image_url
+                pet_image_url: currentPet?.image_url || initialData?.pet_image_url
             }
 
             let error
@@ -142,7 +142,7 @@ export default function TeamBuilder({ gameId, tableName, characterTableName, pet
 
     const filteredChars = characters.filter(c => c.name.toLowerCase().includes(searchQuery.toLowerCase()))
     const filteredPets = pets.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()))
-    const selectedPet = pets.find(p => p.id === petId)
+    const selectedPet = pets.find(p => p.id === petId) || (initialData?.pet_image_url ? { image_url: initialData.pet_image_url, name: 'สัตว์เลี้ยงเดิม' } : null)
 
     return (
         <div className="bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-gray-200 dark:border-gray-800 overflow-hidden">

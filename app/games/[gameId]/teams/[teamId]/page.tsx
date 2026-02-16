@@ -84,14 +84,23 @@ export default async function TeamDetailPage({ params }: { params: Promise<{ gam
                         </div>
 
                         {/* Pet Display */}
-                        {team.pet_image_url && (
-                            <div className="flex items-center gap-4 bg-gray-50 dark:bg-gray-800/40 p-4 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-inner group">
-                                <div className="w-20 h-20 rounded-xl overflow-hidden shadow-md group-hover:scale-105 transition-transform">
-                                    <img src={team.pet_image_url} alt="Pet" className="w-full h-full object-cover" />
+                        {(team.pet_image_url || team.pet_id) && (
+                            <div className="flex items-center gap-4 bg-gray-50 dark:bg-gray-800/40 p-4 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-inner group flex-shrink-0">
+                                <div className="w-16 h-16 rounded-xl overflow-hidden shadow-md group-hover:scale-105 transition-transform bg-white dark:bg-gray-800 flex items-center justify-center">
+                                    {team.pet_image_url ? (
+                                        <img src={team.pet_image_url} alt="Pet" className="w-full h-full object-cover" />
+                                    ) : (
+                                        <div className="flex flex-col items-center">
+                                            <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse mb-1" />
+                                            <span className="text-gray-400 text-[8px] font-bold">PET</span>
+                                        </div>
+                                    )}
                                 </div>
                                 <div>
                                     <div className="text-[10px] text-gray-400 uppercase tracking-widest mb-1 font-bold">สัตว์เลี้ยงประจำทีม</div>
-                                    <div className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-600">PET ENABLED</div>
+                                    <div className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-600">
+                                        {team.pet_id ? 'PET READY' : 'PET ENABLED'}
+                                    </div>
                                 </div>
                             </div>
                         )}
