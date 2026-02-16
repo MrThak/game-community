@@ -19,14 +19,14 @@ export default function PaymentModal({ isOpen, onClose }: PaymentModalProps) {
             bank_acc: '505-2-91460-3',
             bank: 'ไทยพาณิชย์ (SCB)',
             name: 'ทักษิณ ขจัดโรคา',
-            image: '/payment-qr.jpg',
+            image: '/payment-qr.jpg.jpg',
             label: 'พร้อมเพย์ (PromptPay)'
         },
         truemoney: {
             acc: '095-229-5405',
             bank: 'TrueMoney Wallet',
             name: 'ทักษิณ ขจัดโรคา',
-            image: '/truemoney-qr.png',
+            image: '/truemoney-qr.png.png',
             label: 'ทรูมันนี่ วอลเล็ท'
         }
     }
