@@ -31,7 +31,7 @@ export default function CharacterCard({ character, isAdmin, onDelete }: Characte
     return (
         <div className="relative group block">
             <Link href={`/games/${character.game_id}/characters/${character.id}`} className="block">
-                <div className="bg-white dark:bg-gray-900 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                <div className="bg-white dark:bg-gray-900 rounded-xl overflow-hidden border-2 border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                     {/* Image Aspect Ratio Container */}
                     <div className="aspect-[3/4] overflow-hidden bg-gray-100 dark:bg-gray-800 relative">
                         {character.image_url ? (

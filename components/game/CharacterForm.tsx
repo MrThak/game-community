@@ -112,9 +112,12 @@ export default function CharacterForm({ gameId, characterId, tableName = 'charac
             <div className="flex items-center gap-4 mb-6">
                 <button
                     onClick={() => router.back()}
-                    className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors"
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white dark:bg-gray-900/50 hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-all backdrop-blur-sm border border-gray-200 dark:border-gray-800 hover:border-blue-500/30 shadow-sm hover:shadow group"
                 >
-                    <ArrowLeft className="w-6 h-6 text-gray-500" />
+                    <div className="p-1 rounded-full bg-gray-100 dark:bg-gray-800 group-hover:bg-blue-100 dark:group-hover:bg-blue-900/50 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                        <ArrowLeft className="w-4 h-4" />
+                    </div>
+                    <span className="font-medium text-sm">ย้อนกลับ</span>
                 </button>
                 <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
                     {characterId ? 'แก้ไขตัวละคร' : 'เพิ่มตัวละครใหม่'}
