@@ -161,6 +161,3 @@ export default function PaymentModal({ isOpen, onClose }: PaymentModalProps) {
         </>
     )
 }
-
-    )
-}
