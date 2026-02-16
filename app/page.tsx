@@ -101,7 +101,7 @@ export default async function Home() {
                   {cardContent}
                 </Link>
               )
-              )
+
             })}
 
             {(!games || games.length === 0) && (
