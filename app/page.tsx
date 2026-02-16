@@ -51,10 +51,18 @@ export default async function Home() {
               return (
                 <Link
                   key={typedGame.id}
-                  href={`/games/${typedGame.id}`}
-                  className="group flex flex-col items-center gap-3 transition-all duration-300 hover:scale-[1.05] hover:-translate-y-1"
+                  href={typedGame.status === 'coming_soon' ? '#' : `/games/${typedGame.id}`}
+                  className={`group flex flex-col items-center gap-3 transition-all duration-300 ${typedGame.status === 'coming_soon' ? 'opacity-70 cursor-not-allowed' : 'hover:scale-[1.05] hover:-translate-y-1'}`}
+                  onClick={(e) => typedGame.status === 'coming_soon' && e.preventDefault()}
                 >
-                  <div className="aspect-square w-full bg-slate-900/50 relative overflow-hidden rounded-[1.5rem] neon-border group-hover:shadow-blue-500/50 transition-all duration-300">
+                  <div className={`aspect-square w-full bg-slate-900/50 relative overflow-hidden rounded-[1.5rem] neon-border transition-all duration-300 ${typedGame.status === 'coming_soon' ? 'grayscale' : 'group-hover:shadow-blue-500/50'}`}>
+                    {typedGame.status === 'coming_soon' && (
+                      <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/40 backdrop-blur-[2px]">
+                        <span className="px-3 py-1 bg-yellow-500/90 text-yellow-950 text-xs font-bold rounded-full shadow-lg transform -rotate-12 border border-yellow-400">
+                          COMING SOON
+                        </span>
+                      </div>
+                    )}
                     {typedGame.icon_url === '-' || !typedGame.icon_url ? (
                       <div className="w-full h-full flex items-center justify-center bg-slate-900">
                         <Gamepad2 className="w-10 h-10 text-slate-600" />
@@ -63,13 +71,13 @@ export default async function Home() {
                       <img
                         src={typedGame.icon_url}
                         alt={typedGame.name}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        className={`w-full h-full object-cover transition-transform duration-500 ${typedGame.status !== 'coming_soon' ? 'group-hover:scale-110' : ''}`}
                       />
                     )}
                   </div>
 
                   <div className="text-center px-1 w-full">
-                    <h3 className="font-bold text-sm text-slate-300 group-hover:text-blue-400 transition-colors truncate">
+                    <h3 className={`font-bold text-sm transition-colors truncate ${typedGame.status === 'coming_soon' ? 'text-slate-500' : 'text-slate-300 group-hover:text-blue-400'}`}>
                       {typedGame.name}
                     </h3>
                   </div>

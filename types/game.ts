@@ -10,5 +10,6 @@ export interface Game {
             teams?: string
         }
     }
+    status?: 'active' | 'coming_soon' | string
     created_at: string
 }

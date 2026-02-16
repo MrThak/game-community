@@ -57,14 +57,28 @@ export default function AdminPage() {
                                     <p className="text-xs text-gray-500">ID: {game.id}</p>
                                 </div>
                             </div>
-                            <button
-                                onClick={() => handleDelete(game.id)}
-                                className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
-                                title="Delete Game"
-                            >
-                                <Trash2 className="w-5 h-5" />
-                            </button>
-                        </div>
+                            <div className="flex items-center gap-2">
+                                <button
+                                    onClick={async () => {
+                                        const newStatus = game.status === 'coming_soon' ? 'active' : 'coming_soon'
+                                        const { error } = await supabase.from('games').update({ status: newStatus }).eq('id', game.id)
+                                        if (!error) fetchGames()
+                                    }}
+                                    className={`px-3 py-1 rounded-full text-xs font-bold transition-colors ${game.status === 'coming_soon'
+                                        ? 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-400'
+                                        : 'bg-green-100 text-green-700 hover:bg-green-200 dark:bg-green-900/30 dark:text-green-400'
+                                        }`}
+                                >
+                                    {game.status === 'coming_soon' ? 'Coming Soon' : 'Active'}
+                                </button>
+                                <button
+                                    onClick={() => handleDelete(game.id)}
+                                    className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+                                    title="Delete Game"
+                                >
+                                    <Trash2 className="w-5 h-5" />
+                                </button>
+                            </div>                        </div>
                     ))}
                     {games.length === 0 && (
                         <div className="p-8 text-center text-gray-500">No games found. Add one above!</div>
