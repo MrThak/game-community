@@ -48,15 +48,18 @@ export default async function Home() {
           <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-6">
             {games?.map((game: unknown) => {
               const typedGame = game as Game;
+              const isComingSoon = typedGame.status === 'coming_soon';
+              const CardWrapper = isComingSoon ? 'div' : Link;
+              const hrefProps = isComingSoon ? {} : { href: `/games/${typedGame.id}` };
+
               return (
-                <Link
+                <CardWrapper
                   key={typedGame.id}
-                  href={typedGame.status === 'coming_soon' ? '#' : `/games/${typedGame.id}`}
-                  className={`group flex flex-col items-center gap-3 transition-all duration-300 ${typedGame.status === 'coming_soon' ? 'opacity-70 cursor-not-allowed' : 'hover:scale-[1.05] hover:-translate-y-1'}`}
-                  onClick={(e) => typedGame.status === 'coming_soon' && e.preventDefault()}
+                  {...hrefProps}
+                  className={`group flex flex-col items-center gap-3 transition-all duration-300 ${isComingSoon ? 'opacity-70 cursor-not-allowed' : 'hover:scale-[1.05] hover:-translate-y-1'}`}
                 >
-                  <div className={`aspect-square w-full bg-slate-900/50 relative overflow-hidden rounded-[1.5rem] neon-border transition-all duration-300 ${typedGame.status === 'coming_soon' ? 'grayscale' : 'group-hover:shadow-blue-500/50'}`}>
-                    {typedGame.status === 'coming_soon' && (
+                  <div className={`aspect-square w-full bg-slate-900/50 relative overflow-hidden rounded-[1.5rem] neon-border transition-all duration-300 ${isComingSoon ? 'grayscale' : 'group-hover:shadow-blue-500/50'}`}>
+                    {isComingSoon && (
                       <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/40 backdrop-blur-[2px]">
                         <span className="px-3 py-1 bg-yellow-500/90 text-yellow-950 text-xs font-bold rounded-full shadow-lg transform -rotate-12 border border-yellow-400">
                           COMING SOON
@@ -71,17 +74,17 @@ export default async function Home() {
                       <img
                         src={typedGame.icon_url}
                         alt={typedGame.name}
-                        className={`w-full h-full object-cover transition-transform duration-500 ${typedGame.status !== 'coming_soon' ? 'group-hover:scale-110' : ''}`}
+                        className={`w-full h-full object-cover transition-transform duration-500 ${!isComingSoon ? 'group-hover:scale-110' : ''}`}
                       />
                     )}
                   </div>
 
                   <div className="text-center px-1 w-full">
-                    <h3 className={`font-bold text-sm transition-colors truncate ${typedGame.status === 'coming_soon' ? 'text-slate-500' : 'text-slate-300 group-hover:text-blue-400'}`}>
+                    <h3 className={`font-bold text-sm transition-colors truncate ${isComingSoon ? 'text-slate-500' : 'text-slate-300 group-hover:text-blue-400'}`}>
                       {typedGame.name}
                     </h3>
                   </div>
-                </Link>
+                </CardWrapper>
               )
             })}
 
