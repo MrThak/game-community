@@ -23,8 +23,14 @@ export default function TeamActionButtons({
     useEffect(() => {
         const checkOwnership = async () => {
             const { data: { session } } = await supabase.auth.getSession()
+            console.log('Session User ID:', session?.user?.id)
+            console.log('Team Owner ID:', ownerId)
+
             if (session?.user?.id === ownerId) {
+                console.log('Ownership verified! Showing buttons.')
                 setIsOwner(true)
+            } else {
+                console.log('Ownership mismatch or no session.')
             }
             setLoading(false)
         }
