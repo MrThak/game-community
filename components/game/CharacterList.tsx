@@ -109,7 +109,7 @@ export default function CharacterList({ gameId, tableName }: { gameId: string, t
                 <div className="relative w-full sm:w-64">
                     <input
                         type="text"
-                        placeholder="Search Character..."
+                        placeholder="ค้นหาตัวละคร..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         className="w-full pl-10 pr-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
@@ -130,14 +130,14 @@ export default function CharacterList({ gameId, tableName }: { gameId: string, t
                                     className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm font-medium transition-colors disabled:opacity-50"
                                 >
                                     {isSeeding ? <Loader2 className="w-4 h-4 animate-spin" /> : <DatabaseBackup className="w-4 h-4" />}
-                                    Auto Import (7K)
+                                    นำเข้าข้อมูลเริ่มต้น (7K)
                                 </button>
                             )}
 
                             <Link href={`/games/${gameId}/characters/new`}>
                                 <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors">
                                     <Plus className="w-4 h-4" />
-                                    Add Character
+                                    เพิ่มตัวละคร
                                 </button>
                             </Link>
                         </>
@@ -147,10 +147,10 @@ export default function CharacterList({ gameId, tableName }: { gameId: string, t
 
             {/* Grid */}
             {loading ? (
-                <div className="text-center py-12 text-gray-500">Loading characters...</div>
+                <div className="text-center py-12 text-gray-500">กำลังโหลดตัวละคร...</div>
             ) : filteredCharacters.length === 0 ? (
                 <div className="text-center py-16 bg-white dark:bg-gray-900 rounded-xl border border-dashed border-gray-300 dark:border-gray-800">
-                    <p className="text-gray-500 mb-4">No characters found.</p>
+                    <p className="text-gray-500 mb-4">ไม่พบข้อมูลตัวละคร</p>
                 </div>
             ) : (
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">

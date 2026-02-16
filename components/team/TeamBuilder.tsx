@@ -179,7 +179,7 @@ export default function TeamBuilder({ gameId, tableName, characterTableName, pet
                         <div className="flex h-full gap-4 md:gap-8">
                             {/* Back Row */}
                             <div className="flex-1 flex flex-col items-center justify-center gap-4 border-r-2 border-dashed border-slate-300 dark:border-slate-700 pr-4">
-                                <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest text-center w-full mb-2">Back Row</h3>
+                                <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest text-center w-full mb-2">แถวหลัง (Back Row)</h3>
                                 <div className="grid grid-rows-5 gap-3 h-full">
                                     {Array.from({ length: 5 }).map((_, i) => {
                                         const char = backRow[i]
@@ -207,7 +207,7 @@ export default function TeamBuilder({ gameId, tableName, characterTableName, pet
 
                             {/* Front Row */}
                             <div className="flex-1 flex flex-col items-center justify-center gap-4 pl-4 border-l-2 border-dashed border-slate-300 dark:border-slate-700">
-                                <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest text-center w-full mb-2">Front Row</h3>
+                                <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest text-center w-full mb-2">แถวหน้า (Front Row)</h3>
                                 <div className="grid grid-rows-5 gap-3 h-full">
                                     {Array.from({ length: 5 }).map((_, i) => {
                                         const char = frontRow[i]
@@ -320,7 +320,7 @@ export default function TeamBuilder({ gameId, tableName, characterTableName, pet
                                         <h4 className="font-bold text-sm text-gray-900 dark:text-white truncate">{pet.name}</h4>
                                     </div>
                                     {petId === pet.id && (
-                                        <span className="text-xs bg-green-100 text-green-600 px-2 py-0.5 rounded-full font-bold">Selected</span>
+                                        <span className="text-xs bg-green-100 text-green-600 px-2 py-0.5 rounded-full font-bold">เลือกอยู่</span>
                                     )}
                                 </div>
                             ))
