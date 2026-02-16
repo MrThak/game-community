@@ -22,6 +22,7 @@ export default function CharacterForm({ gameId, characterId, tableName = 'charac
 
     const [formData, setFormData] = useState<Partial<Character>>({
         name: '',
+        name_en: '',
         game_id: gameId,
         role: 'โจมตี',
         image_url: '',
@@ -136,7 +137,17 @@ export default function CharacterForm({ gameId, characterId, tableName = 'charac
                                 value={formData.name}
                                 onChange={e => setFormData({ ...formData, name: e.target.value })}
                                 className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 bg-transparent"
-                                placeholder="เช่น Rudy, Eileene"
+                                placeholder="เช่น เฟรยา, รูดี้"
+                            />
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">ชื่อภาษาอังกฤษ (English Name)</label>
+                            <input
+                                value={formData.name_en || ''}
+                                onChange={e => setFormData({ ...formData, name_en: e.target.value })}
+                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 bg-transparent"
+                                placeholder="e.g. Freya, Rudy"
                             />
                         </div>
 

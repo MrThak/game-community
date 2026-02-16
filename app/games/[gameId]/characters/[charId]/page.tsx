@@ -78,6 +78,12 @@ export default async function CharacterDetailPage({ params }: { params: Promise<
                             <div className="absolute bottom-6 left-6 right-6 text-white">
                                 <h1 className="text-3xl font-bold mb-1">{character.name}</h1>
                                 <div className="flex items-center gap-2">
+                                    {character.name_en && (
+                                        <span className="text-white/70 text-sm">{character.name_en}</span>
+                                    )}
+                                    {character.name_en && character.role && (
+                                        <span className="text-white/30">•</span>
+                                    )}
                                     <span className="text-gray-300 text-sm">{character.role}</span>
                                 </div>
                             </div>

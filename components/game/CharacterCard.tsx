@@ -51,6 +51,9 @@ export default function CharacterCard({ character, isAdmin, onDelete }: Characte
                     {/* Info Content */}
                     <div className="p-3">
                         <h3 className="font-bold text-gray-900 dark:text-white truncate">{character.name}</h3>
+                        {character.name_en && (
+                            <p className="text-xs text-gray-400 dark:text-gray-500 truncate">{character.name_en}</p>
+                        )}
 
                         <div className="flex items-center gap-2 mt-2">
 

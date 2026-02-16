@@ -1,7 +1,8 @@
 -- Add missing columns to seven_knights_characters table
 ALTER TABLE public.seven_knights_characters 
 ADD COLUMN IF NOT EXISTS description text,
-ADD COLUMN IF NOT EXISTS recommended_stages text[];
+ADD COLUMN IF NOT EXISTS recommended_stages text[],
+ADD COLUMN IF NOT EXISTS name_en text;
 
 -- Optional: Verify columns exist
 DO $$

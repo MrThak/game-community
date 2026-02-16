@@ -2,6 +2,7 @@ export interface Character {
     id: string
     created_at?: string
     name: string
+    name_en?: string
     game_id: string
     image_url?: string
     description?: string
