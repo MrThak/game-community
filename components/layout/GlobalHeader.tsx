@@ -64,23 +64,43 @@ export default function GlobalHeader() {
                         </button>
 
                         {user ? (
-                            <Link href="/profile" className="flex items-center gap-3 hover:opacity-80 transition-opacity group">
-                                <div className="hidden md:flex flex-col items-end">
-                                    <span className="text-sm font-medium text-gray-200 group-hover:text-blue-400 transition-colors">
-                                        {user.user_metadata?.full_name || user.email?.split('@')[0]}
-                                    </span>
-                                    <span className="text-xs text-blue-400 uppercase tracking-wider font-bold">
-                                        {isAdmin ? 'ผู้ดูแลระบบ' : 'สมาชิก'}
-                                    </span>
-                                </div>
+                            <div className="flex items-center gap-3">
+                                <Link href="/profile" className="flex items-center gap-3 hover:opacity-80 transition-opacity group">
+                                    <div className="hidden md:flex flex-col items-end">
+                                        <span className="text-sm font-medium text-gray-200 group-hover:text-blue-400 transition-colors">
+                                            {user.user_metadata?.full_name || user.email?.split('@')[0]}
+                                        </span>
+                                        <span className="text-xs text-blue-400 uppercase tracking-wider font-bold">
+                                            {isAdmin ? 'ผู้ดูแลระบบ' : 'สมาชิก'}
+                                        </span>
+                                    </div>
 
-                                <UserAvatar
-                                    avatarUrl={user.user_metadata?.avatar_url}
-                                    alt={user.user_metadata?.full_name || 'User'}
-                                    size="md"
-                                    className="border-2 border-gray-800 group-hover:border-blue-500 transition-colors"
-                                />
-                            </Link>
+                                    <UserAvatar
+                                        avatarUrl={user.user_metadata?.avatar_url}
+                                        alt={user.user_metadata?.full_name || 'User'}
+                                        size="md"
+                                        className="border-2 border-gray-800 group-hover:border-blue-500 transition-colors"
+                                    />
+                                </Link>
+
+                                {isAdmin && (
+                                    <Link
+                                        href="/admin"
+                                        className="p-2 text-gray-400 hover:text-blue-400 hover:bg-blue-500/10 rounded-lg transition-all"
+                                        title="แผงควบคุมแอดมิน"
+                                    >
+                                        <Settings className="w-5 h-5" />
+                                    </Link>
+                                )}
+
+                                <button
+                                    onClick={handleLogout}
+                                    className="p-2 text-gray-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all"
+                                    title="ออกจากระบบ"
+                                >
+                                    <LogOut className="w-5 h-5" />
+                                </button>
+                            </div>
                         ) : (
                             <div className="flex items-center gap-2">
                                 <LoginButton />
