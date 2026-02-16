@@ -49,15 +49,9 @@ export default async function Home() {
             {games?.map((game: unknown) => {
               const typedGame = game as Game;
               const isComingSoon = typedGame.status === 'coming_soon';
-              const CardWrapper = isComingSoon ? 'div' : Link;
-              const hrefProps = isComingSoon ? {} : { href: `/games/${typedGame.id}` };
 
-              return (
-                <CardWrapper
-                  key={typedGame.id}
-                  {...hrefProps}
-                  className={`group flex flex-col items-center gap-3 transition-all duration-300 ${isComingSoon ? 'opacity-70 cursor-not-allowed' : 'hover:scale-[1.05] hover:-translate-y-1'}`}
-                >
+              const cardContent = (
+                <>
                   <div className={`aspect-square w-full bg-slate-900/50 relative overflow-hidden rounded-[1.5rem] neon-border transition-all duration-300 ${isComingSoon ? 'grayscale' : 'group-hover:shadow-blue-500/50'}`}>
                     {isComingSoon && (
                       <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/40 backdrop-blur-[2px]">
@@ -84,7 +78,29 @@ export default async function Home() {
                       {typedGame.name}
                     </h3>
                   </div>
-                </CardWrapper>
+                </>
+              );
+
+              if (isComingSoon) {
+                return (
+                  <div
+                    key={typedGame.id}
+                    className="group flex flex-col items-center gap-3 transition-all duration-300 opacity-70 cursor-not-allowed"
+                  >
+                    {cardContent}
+                  </div>
+                )
+              }
+
+              return (
+                <Link
+                  key={typedGame.id}
+                  href={`/games/${typedGame.id}`}
+                  className="group flex flex-col items-center gap-3 transition-all duration-300 hover:scale-[1.05] hover:-translate-y-1"
+                >
+                  {cardContent}
+                </Link>
+              )
               )
             })}
 
