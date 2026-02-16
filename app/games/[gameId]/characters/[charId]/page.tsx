@@ -78,29 +78,12 @@ export default async function CharacterDetailPage({ params }: { params: Promise<
                             <div className="absolute bottom-6 left-6 right-6 text-white">
                                 <h1 className="text-3xl font-bold mb-1">{character.name}</h1>
                                 <div className="flex items-center gap-2">
-                                    <span className="px-2 py-0.5 bg-blue-600 rounded text-xs font-bold uppercase">{character.rarity}</span>
                                     <span className="text-gray-300 text-sm">{character.role}</span>
                                 </div>
                             </div>
                         </div>
 
-                        {/* Element Card */}
-                        <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm">
-                            <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-4 flex items-center gap-2">
-                                <Award className="w-4 h-4" />
-                                คุณสมบัติพื้นฐาน
-                            </h3>
-                            <div className="space-y-4">
-                                <div className="flex justify-between items-center">
-                                    <span className="text-gray-600 dark:text-gray-300">ธาตุ</span>
-                                    <span className="font-bold text-gray-900 dark:text-white">{character.element}</span>
-                                </div>
-                                <div className="flex justify-between items-center">
-                                    <span className="text-gray-600 dark:text-gray-300">ตำแหน่ง</span>
-                                    <span className="font-bold text-gray-900 dark:text-white">{character.role}</span>
-                                </div>
-                            </div>
-                        </div>
+                        {/* Element Card - Removed as per request */}
                     </div>
 
                     {/* Right: Skills & Recommendations */}

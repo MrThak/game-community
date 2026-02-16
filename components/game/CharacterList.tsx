@@ -10,21 +10,21 @@ import Link from 'next/link'
 
 // Mock Data for "Auto-Seed" feature
 const SEVEN_KNIGHTS_DATA = [
-    { name: 'Rudy', element: 'Light', rarity: 'Legendary', role: 'Tank' },
-    { name: 'Eileene', element: 'Fire', rarity: 'Legendary', role: 'DPS' },
-    { name: 'Rachel', element: 'Fire', rarity: 'Legendary', role: 'DPS' },
-    { name: 'Dellons', element: 'Dark', rarity: 'Legendary', role: 'DPS' },
-    { name: 'Jave', element: 'Fire', rarity: 'Legendary', role: 'Tank' },
-    { name: 'Spike', element: 'Ice', rarity: 'Legendary', role: 'DPS' },
-    { name: 'Kris', element: 'Dark', rarity: 'Legendary', role: 'DPS' },
-    { name: 'Teo', element: 'Wind', rarity: 'Legendary', role: 'DPS' },
-    { name: 'Karma', element: 'Dark', rarity: 'Legendary', role: 'Magic' },
-    { name: 'Kyle', element: 'Fire', rarity: 'Legendary', role: 'DPS' },
-    { name: 'Yeonhee', element: 'Light', rarity: 'Legendary', role: 'Magic' },
-    { name: 'Ace', element: 'Wind', rarity: 'Legendary', role: 'DPS' },
-    { name: 'Sun Wukong', element: 'Earth', rarity: 'Legendary', role: 'Tank' },
-    { name: 'Lu Bu', element: 'Fire', rarity: 'Legendary', role: 'DPS' },
-    { name: 'Rin', element: 'Magic', rarity: 'Legendary', role: 'Magic' }
+    { name: 'Rudy', role: 'Tank' },
+    { name: 'Eileene', role: 'DPS' },
+    { name: 'Rachel', role: 'DPS' },
+    { name: 'Dellons', role: 'DPS' },
+    { name: 'Jave', role: 'Tank' },
+    { name: 'Spike', role: 'DPS' },
+    { name: 'Kris', role: 'DPS' },
+    { name: 'Teo', role: 'DPS' },
+    { name: 'Karma', role: 'Magic' },
+    { name: 'Kyle', role: 'DPS' },
+    { name: 'Yeonhee', role: 'Magic' },
+    { name: 'Ace', role: 'DPS' },
+    { name: 'Sun Wukong', role: 'Tank' },
+    { name: 'Lu Bu', role: 'DPS' },
+    { name: 'Rin', role: 'Magic' }
 ]
 
 export default function CharacterList({ gameId, tableName }: { gameId: string, tableName: string }) {
@@ -88,9 +88,7 @@ export default function CharacterList({ gameId, tableName }: { gameId: string, t
 
     const filteredCharacters = characters.filter(char =>
         char.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        char.element?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        char.role?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        char.rarity?.toLowerCase().includes(searchQuery.toLowerCase())
+        char.role?.toLowerCase().includes(searchQuery.toLowerCase())
     )
 
     const handleDeleteCharacter = async (id: string) => {

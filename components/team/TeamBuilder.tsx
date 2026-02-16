@@ -290,7 +290,7 @@ export default function TeamBuilder({ gameId, tableName, characterTableName, pet
                                     <div className="flex-1 min-w-0">
                                         <h4 className="font-bold text-sm text-gray-900 dark:text-white truncate">{char.name}</h4>
                                         <div className="flex items-center gap-2 text-xs text-gray-500">
-                                            <span className={`w-2 h-2 rounded-full ${char.element ? 'bg-blue-500' : 'bg-gray-400'}`}></span>
+
                                             {char.role}
                                         </div>
                                     </div>
