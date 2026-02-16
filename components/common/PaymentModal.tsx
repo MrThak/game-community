@@ -15,7 +15,7 @@ export default function PaymentModal({ isOpen, onClose }: PaymentModalProps) {
 
     const DATA: Record<'promptpay' | 'truemoney', { acc: string, bank: string, name: string, image: string, label: string, bank_acc?: string }> = {
         promptpay: {
-            acc: '095-263-5405',
+            acc: '095-229-5405',
             bank_acc: '505-2-91460-3',
             bank: 'ไทยพาณิชย์ (SCB)',
             name: 'ทักษิณ ขจัดโรคา',
@@ -23,10 +23,10 @@ export default function PaymentModal({ isOpen, onClose }: PaymentModalProps) {
             label: 'พร้อมเพย์ (PromptPay)'
         },
         truemoney: {
-            acc: '095-263-5405',
+            acc: '095-229-5405',
             bank: 'TrueMoney Wallet',
             name: 'ทักษิณ ขจัดโรคา',
-            image: '/truemoney-qr.jpg',
+            image: '/truemoney-qr.png',
             label: 'ทรูมันนี่ วอลเล็ท'
         }
     }
