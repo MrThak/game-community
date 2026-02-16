@@ -10,8 +10,18 @@ export const dynamic = 'force-dynamic'
 export default async function CharacterDetailPage({ params }: { params: Promise<{ gameId: string, charId: string }> }) {
     const { gameId, charId } = await params
 
+    // 1. Get Game Config for Table Name
+    const { data: game } = await supabase
+        .from('games')
+        .select('metadata')
+        .eq('id', gameId)
+        .single()
+
+    const tableName = game?.metadata?.tables?.characters || 'characters'
+
+    // 2. Get Character
     const { data: char, error } = await supabase
-        .from('characters')
+        .from(tableName)
         .select('*')
         .eq('id', charId)
         .single()

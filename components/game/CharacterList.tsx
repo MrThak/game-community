@@ -27,7 +27,7 @@ const SEVEN_KNIGHTS_DATA = [
     { name: 'Rin', element: 'Magic', rarity: 'Legendary', role: 'Magic' }
 ]
 
-export default function CharacterList({ gameId }: { gameId: string }) {
+export default function CharacterList({ gameId, tableName }: { gameId: string, tableName: string }) {
     const [characters, setCharacters] = useState<Character[]>([])
     const [loading, setLoading] = useState(true)
     const [searchQuery, setSearchQuery] = useState('')
@@ -35,16 +35,22 @@ export default function CharacterList({ gameId }: { gameId: string }) {
     const { isAdmin } = useAdmin()
 
     useEffect(() => {
-        fetchCharacters()
-    }, [gameId])
+        if (tableName) fetchCharacters()
+    }, [gameId, tableName])
 
     const fetchCharacters = async () => {
         setLoading(true)
         const { data, error } = await supabase
-            .from('characters')
+            .from(tableName)
             .select('*')
             .eq('game_id', gameId)
-            .order('element', { ascending: true }) // Sort by element first, just for structure
+            // .order('element', { ascending: true }) // Element might not exist in all games, maybe remove sort or check schema. Keeping it simple for now or catch error.
+            // Safe bet: just select * and sort by created_at or name if element is missing. Table-per-game means we know structure, but CharacterList is shared.
+            // Let's remove specific order field that might not exist or keep it if we assume standard structure.
+            // User requested specific columns for 7Knights which didn't strictly say 'element' was removed, but listed a subset. 
+            // In the implementation plan, "element" was removed from 7Knights list. So sorting by element will fail!
+            // I should change sort to 'name' or 'created_at'.
+            .order('name', { ascending: true })
 
         if (error) {
             console.error('Error fetching characters:', error)
@@ -66,7 +72,7 @@ export default function CharacterList({ gameId }: { gameId: string }) {
                 image_url: `https://ui-avatars.com/api/?name=${char.name}&background=random&size=256` // Placeholder
             }))
 
-            const { error } = await supabase.from('characters').insert(mockData)
+            const { error } = await supabase.from(tableName).insert(mockData)
 
             if (error) throw error
 
@@ -89,7 +95,7 @@ export default function CharacterList({ gameId }: { gameId: string }) {
 
     const handleDeleteCharacter = async (id: string) => {
         try {
-            const { error } = await supabase.from('characters').delete().eq('id', id)
+            const { error } = await supabase.from(tableName).delete().eq('id', id)
             if (error) throw error
             setCharacters(characters.filter(c => c.id !== id))
         } catch (error: any) {

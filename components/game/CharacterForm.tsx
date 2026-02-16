@@ -4,15 +4,16 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import { Character } from '@/types/character'
-import { Link, Loader2, Save, ArrowLeft, Image as ImageIcon, Zap, Sword, Star, Shield, Type } from 'lucide-react'
+import { Link, Loader2, Save, ArrowLeft, Image as ImageIcon, Zap, Sword, Star, Shield, Type, Tag, X } from 'lucide-react'
 import { useAdmin } from '@/hooks/useAdmin'
 
 interface CharacterFormProps {
     gameId: string
     characterId?: string // If present, it's edit mode
+    tableName?: string // Optional for backward compatibility, but should be required
 }
 
-export default function CharacterForm({ gameId, characterId }: CharacterFormProps) {
+export default function CharacterForm({ gameId, characterId, tableName = 'characters' }: CharacterFormProps) {
     const router = useRouter()
     const { isAdmin, loading: adminLoading } = useAdmin()
 
@@ -22,9 +23,7 @@ export default function CharacterForm({ gameId, characterId }: CharacterFormProp
     const [formData, setFormData] = useState<Partial<Character>>({
         name: '',
         game_id: gameId,
-        element: 'Fire',
-        rarity: 'Legendary',
-        role: 'DPS',
+        role: 'โจมตี',
         image_url: '',
         description: '',
         normal_attack: '',
@@ -40,7 +39,7 @@ export default function CharacterForm({ gameId, characterId }: CharacterFormProp
 
         const fetchCharacter = async () => {
             const { data, error } = await supabase
-                .from('characters')
+                .from(tableName)
                 .select('*')
                 .eq('id', characterId)
                 .single()
@@ -56,7 +55,7 @@ export default function CharacterForm({ gameId, characterId }: CharacterFormProp
         }
 
         fetchCharacter()
-    }, [characterId, gameId, router])
+    }, [characterId, gameId, router, tableName])
 
     // Redirect if not admin (client-side protection)
     useEffect(() => {
@@ -74,7 +73,7 @@ export default function CharacterForm({ gameId, characterId }: CharacterFormProp
             if (characterId) {
                 // Update
                 const { error } = await supabase
-                    .from('characters')
+                    .from(tableName)
                     .update(formData)
                     .eq('id', characterId)
 
@@ -83,7 +82,7 @@ export default function CharacterForm({ gameId, characterId }: CharacterFormProp
             } else {
                 // Create
                 const { error } = await supabase
-                    .from('characters')
+                    .from(tableName)
                     .insert([{ ...formData, game_id: gameId }])
 
                 if (error) throw error
@@ -150,6 +149,51 @@ export default function CharacterForm({ gameId, characterId }: CharacterFormProp
                                     className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 bg-transparent"
                                     placeholder="https://..."
                                 />
+                                <div className="relative">
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={async (e) => {
+                                            const file = e.target.files?.[0]
+                                            if (!file) return
+
+                                            try {
+                                                setLoading(true)
+                                                // 1. Upload to Supabase Storage
+                                                const fileExt = file.name.split('.').pop()
+                                                const fileName = `${gameId}/${Date.now()}.${fileExt}`
+                                                const { error: uploadError } = await supabase.storage
+                                                    .from('game_assets')
+                                                    .upload(fileName, file)
+
+                                                if (uploadError) throw uploadError
+
+                                                // 2. Get Public URL
+                                                const { data: { publicUrl } } = supabase.storage
+                                                    .from('game_assets')
+                                                    .getPublicUrl(fileName)
+
+                                                // 3. Update Form Data
+                                                setFormData({ ...formData, image_url: publicUrl })
+                                                alert('อัปโหลดรูปสำเร็จ!')
+                                            } catch (error: any) {
+                                                console.error('Upload failed:', error)
+                                                alert(`อัปโหลดล้มเหลว: ${error.message}`)
+                                            } finally {
+                                                setLoading(false)
+                                            }
+                                        }}
+                                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                    />
+                                    <button
+                                        type="button"
+                                        className="px-4 py-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors flex items-center gap-2 border border-gray-200 dark:border-gray-700"
+                                    >
+                                        <ImageIcon className="w-5 h-5 text-gray-500" />
+                                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">อัปโหลด</span>
+                                    </button>
+                                </div>
+
                                 {formData.image_url && (
                                     <div className="w-10 h-10 rounded-lg border dark:border-gray-800 overflow-hidden flex-shrink-0">
                                         <img src={formData.image_url} alt="mini preview" className="w-full h-full object-cover" />
@@ -159,51 +203,19 @@ export default function CharacterForm({ gameId, characterId }: CharacterFormProp
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">ธาตุ</label>
-                            <select
-                                value={formData.element}
-                                onChange={e => setFormData({ ...formData, element: e.target.value })}
-                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 bg-transparent"
-                            >
-                                <option value="Fire">Fire (ไฟ)</option>
-                                <option value="Water">Water (น้ำ)</option>
-                                <option value="Earth">Earth (ดิน)</option>
-                                <option value="Wind">Wind (ลม)</option>
-                                <option value="Dark">Dark (มืด)</option>
-                                <option value="Light">Light (แสง)</option>
-                                <option value="Magic">Magic (เวทย์)</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">ระดับ (Rarity)</label>
-                            <select
-                                value={formData.rarity}
-                                onChange={e => setFormData({ ...formData, rarity: e.target.value })}
-                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 bg-transparent"
-                            >
-                                <option value="Legendary">Legendary</option>
-                                <option value="Epic">Epic</option>
-                                <option value="Rare">Rare</option>
-                                <option value="Common">Common</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">ตำแหน่ง (Role)</label>
-                            <select
-                                value={formData.role}
-                                onChange={e => setFormData({ ...formData, role: e.target.value })}
-                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 bg-transparent"
-                            >
-                                <option value="Tank">Tank</option>
-                                <option value="DPS">DPS</option>
-                                <option value="Support">Support</option>
-                                <option value="Magic">Magic</option>
-                            </select>
-                        </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">สาย (Class)</label>
+                        <select
+                            value={formData.role}
+                            onChange={e => setFormData({ ...formData, role: e.target.value })}
+                            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 bg-transparent"
+                        >
+                            <option value="โจมตี">โจมตี (Attack)</option>
+                            <option value="เวท">เวท (Magic)</option>
+                            <option value="ป้องกัน">ป้องกัน (Defense)</option>
+                            <option value="สนับสนุน">สนับสนุน (Support)</option>
+                            <option value="สมดุล">สมดุล (Balance)</option>
+                        </select>
                     </div>
 
                     <div>
@@ -279,9 +291,55 @@ export default function CharacterForm({ gameId, characterId }: CharacterFormProp
                 <div className="space-y-6">
                     <h3 className="text-lg font-semibold flex items-center gap-2 text-gray-900 dark:text-white pb-2 border-b dark:border-gray-800">
                         <Shield className="w-5 h-5 text-green-500" />
-                        อุปกรณ์แนะนำ
+                        ข้อมูลแนะนำ
                     </h3>
+
                     <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">ด่านที่แนะนำ (Recommended Stages)</label>
+
+                        <div className="flex flex-wrap gap-2 mb-3">
+                            {formData.recommended_stages?.map((stage, index) => (
+                                <span key={index} className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
+                                    {stage}
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            const newStages = formData.recommended_stages?.filter((_, i) => i !== index)
+                                            setFormData({ ...formData, recommended_stages: newStages })
+                                        }}
+                                        className="hover:bg-blue-200 dark:hover:bg-blue-800 rounded-full p-0.5 transition-colors"
+                                    >
+                                        <X className="w-3 h-3" />
+                                    </button>
+                                </span>
+                            ))}
+                        </div>
+
+                        <div className="flex gap-2">
+                            <input
+                                type="text"
+                                placeholder="พิมพ์ชื่อด่านแล้วกด Enter..."
+                                className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 bg-transparent"
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                        e.preventDefault()
+                                        const val = e.currentTarget.value.trim()
+                                        if (val && !formData.recommended_stages?.includes(val)) {
+                                            setFormData({
+                                                ...formData,
+                                                recommended_stages: [...(formData.recommended_stages || []), val]
+                                            })
+                                            e.currentTarget.value = ''
+                                        }
+                                    }
+                                }}
+                            />
+                        </div>
+                        <p className="text-xs text-gray-400 mt-2">พิมพ์ชื่อด่านแล้วกด Enter เพื่อเพิ่ม Tag</p>
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">อุปกรณ์แนะนำ</label>
                         <textarea
                             value={formData.recommended_set || ''}
                             onChange={e => setFormData({ ...formData, recommended_set: e.target.value })}
@@ -302,8 +360,8 @@ export default function CharacterForm({ gameId, characterId }: CharacterFormProp
                         {characterId ? 'บันทึกการแก้ไขตัวละคร' : 'สร้างและเผยแพร่ตัวละคร'}
                     </button>
                 </div>
-            </form>
-        </div>
+            </form >
+        </div >
     )
 }
 

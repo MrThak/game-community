@@ -102,13 +102,7 @@ export default async function Home() {
             />
           </div>
 
-          <div className="bg-gradient-to-br from-blue-900/20 to-indigo-900/20 rounded-xl p-6 border border-blue-500/30 sticky top-[340px] backdrop-blur-sm neon-border">
-            <h3 className="font-bold text-white mb-2 neon-text">ลงโฆษณากับเรา?</h3>
-            <p className="text-sm text-slate-400 mb-4">ติดต่อทีมงานเพื่อโปรโมทเกมของคุณในพื้นที่นี้</p>
-            <button className="w-full py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-sm font-medium transition-all shadow-lg shadow-blue-600/20 hover:shadow-blue-500/40">
-              ติดต่อโฆษณา
-            </button>
-          </div>
+
         </aside>
       </div>
     </div>

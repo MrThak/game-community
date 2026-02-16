@@ -11,11 +11,11 @@ console.log('Key exists:', !!supabaseKey);
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 async function test() {
-    const { data, error } = await supabase.from('games').select('id, name').limit(1);
+    const { data, error } = await supabase.from('games').select('id, name, slug');
     if (error) {
         console.error('Error fetching games:', error);
     } else {
-        console.log('Successfully fetched games:', data);
+        console.log('Games:', data);
     }
 }
 

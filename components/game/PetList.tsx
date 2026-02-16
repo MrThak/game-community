@@ -8,7 +8,7 @@ import { Search, Plus, Loader2, PawPrint } from 'lucide-react'
 import Link from 'next/link'
 import { useAdmin } from '@/hooks/useAdmin'
 
-export default function PetList({ gameId }: { gameId: string }) {
+export default function PetList({ gameId, tableName }: { gameId: string, tableName: string }) {
     const { isAdmin } = useAdmin()
     const [pets, setPets] = useState<Pet[]>([])
     const [loading, setLoading] = useState(true)
@@ -18,7 +18,7 @@ export default function PetList({ gameId }: { gameId: string }) {
         setLoading(true)
         try {
             const { data, error } = await supabase
-                .from('pets')
+                .from(tableName)
                 .select('*')
                 .eq('game_id', gameId)
                 .order('created_at', { ascending: false })
@@ -30,16 +30,16 @@ export default function PetList({ gameId }: { gameId: string }) {
         } finally {
             setLoading(false)
         }
-    }, [gameId])
+    }, [gameId, tableName])
 
     useEffect(() => {
-        fetchPets()
-    }, [fetchPets])
+        if (tableName) fetchPets()
+    }, [fetchPets, tableName])
 
     const handleDeletePet = async (id: string) => {
         try {
             const { error } = await supabase
-                .from('pets')
+                .from(tableName)
                 .delete()
                 .eq('id', id)
 

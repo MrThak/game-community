@@ -5,9 +5,7 @@ export interface Character {
     game_id: string
     image_url?: string
     description?: string
-    element?: 'Fire' | 'Water' | 'Earth' | 'Wind' | 'Dark' | 'Light' | 'Magic' | string
-    rarity?: 'Legendary' | 'Epic' | 'Rare' | 'Common' | string
-    role?: 'Tank' | 'DPS' | 'Support' | 'Magic' | string
+    role?: 'Tank' | 'DPS' | 'Support' | 'Magic' | 'Attack' | 'Defense' | 'Balanced' | 'โจมตี' | 'เวท' | 'ป้องกัน' | 'สนับสนุน' | 'สมดุล' | string
 
     // Skill Info
     normal_attack?: string
@@ -17,4 +15,5 @@ export interface Character {
 
     // Recommendations
     recommended_set?: string
+    recommended_stages?: string[]
 }

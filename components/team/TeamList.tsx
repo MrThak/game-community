@@ -6,7 +6,7 @@ import TeamCard, { Team } from './TeamCard'
 import { Plus, Search, Loader2, Swords, Shield } from 'lucide-react'
 import TeamBuilder from './TeamBuilder'
 
-export default function TeamList({ gameId }: { gameId: string }) {
+export default function TeamList({ gameId, tableName, characterTableName, petTableName }: { gameId: string, tableName: string, characterTableName: string, petTableName: string }) {
     const [teams, setTeams] = useState<Team[]>([])
     const [loading, setLoading] = useState(true)
     const [filterMode, setFilterMode] = useState<'All' | 'Arena' | 'GuildWar'>('All')
@@ -15,13 +15,13 @@ export default function TeamList({ gameId }: { gameId: string }) {
     const [searchQuery, setSearchQuery] = useState('')
 
     useEffect(() => {
-        fetchTeams()
-    }, [gameId])
+        if (tableName) fetchTeams()
+    }, [gameId, tableName])
 
     const fetchTeams = async () => {
         setLoading(true)
         const { data, error } = await supabase
-            .from('teams')
+            .from(tableName)
             .select('*')
             .eq('game_id', gameId)
             .order('created_at', { ascending: false })
@@ -59,7 +59,13 @@ export default function TeamList({ gameId }: { gameId: string }) {
                 >
                     ← Back to Team List
                 </button>
-                <TeamBuilder gameId={gameId} onTeamCreated={() => { setIsCreating(false); fetchTeams(); }} />
+                <TeamBuilder
+                    gameId={gameId}
+                    tableName={tableName}
+                    characterTableName={characterTableName}
+                    petTableName={petTableName}
+                    onTeamCreated={() => { setIsCreating(false); fetchTeams(); }}
+                />
             </div>
         )
     }

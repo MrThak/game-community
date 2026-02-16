@@ -7,10 +7,12 @@ import { User } from '@supabase/supabase-js'
 import { LogOut, User as UserIcon, Menu, Settings } from 'lucide-react'
 import LoginButton from '../auth/LoginButton'
 import UserAvatar from '../common/UserAvatar'
+import { useAdmin } from '@/hooks/useAdmin'
 
 export default function GlobalHeader() {
     const [user, setUser] = useState<User | null>(null)
     const [isMenuOpen, setIsMenuOpen] = useState(false)
+    const { isAdmin } = useAdmin()
 
     useEffect(() => {
         // Check initial session
@@ -61,7 +63,9 @@ export default function GlobalHeader() {
                                 <span className="text-sm font-medium text-gray-200">
                                     {user.user_metadata?.full_name || user.email?.split('@')[0]}
                                 </span>
-                                <span className="text-xs text-gray-500 uppercase tracking-wider">Member</span>
+                                <span className="text-xs text-gray-500 uppercase tracking-wider">
+                                    {isAdmin ? 'ADMIN' : 'MEMBER'}
+                                </span>
                             </div>
 
                             <UserAvatar
@@ -71,7 +75,7 @@ export default function GlobalHeader() {
                                 className="border-2 border-gray-800"
                             />
 
-                            {(user.email === 'thaksin819@gmail.com') && (
+                            {isAdmin && (
                                 <Link
                                     href="/admin"
                                     className="p-2 text-gray-400 hover:text-blue-400 hover:bg-blue-500/10 rounded-lg transition-all"

@@ -12,9 +12,21 @@ import PetList from './PetList'
 export default function GameCommunity({ game }: { game: Game }) {
     const [activeTab, setActiveTab] = useState<'feed' | 'create' | 'characters' | 'teams' | 'pets'>('feed')
 
-    // Games that don't have Pets or Teams systems yet
-    const hiddenFeaturesGames = ['Arknights Endfield', 'Master Duel']
-    const shouldHideFeatures = hiddenFeaturesGames.includes(game.name)
+    // Extract table names from metadata
+    const tables = game.metadata?.tables || {}
+    const characterTableName = tables.characters || ''
+    const petTableName = tables.pets || ''
+    const teamTableName = tables.teams || ''
+
+    // Feature Flags based on metadata (or fallback)
+    const hasCharacters = !!characterTableName
+    const hasPets = !!petTableName
+    const hasTeams = !!teamTableName
+
+    // Compatibility with old "hiddenFeaturesGames" logic (optional, but let's migrate to metadata-driven)
+    // If metadata is empty, fallback? No, let's assume we must populate metadata for new system.
+    // For old games in DB without metadata, they might break.
+    // But since we just created "games" table with defaults, and migrated, we rely on metadata.
 
     // Customize labels for specific games
     const isCardGame = game.name === 'Master Duel'
@@ -61,39 +73,44 @@ export default function GameCommunity({ game }: { game: Game }) {
                         <PenSquare className="w-5 h-5" />
                         เขียนโพสต์ (Post)
                     </button>
-                    <button
-                        onClick={() => setActiveTab('characters')}
-                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all ${activeTab === 'characters'
-                            ? 'bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400'
-                            : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'
-                            }`}
-                    >
-                        <Info className="w-5 h-5" />
-                        {characterLabel}
-                    </button>
-                    {!shouldHideFeatures && (
-                        <>
-                            <button
-                                onClick={() => setActiveTab('pets')}
-                                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all ${activeTab === 'pets'
-                                    ? 'bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400'
-                                    : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'
-                                    }`}
-                            >
-                                <PawPrint className="w-5 h-5" />
-                                สัตว์เลี้ยง (Pets)
-                            </button>
-                            <button
-                                onClick={() => setActiveTab('teams')}
-                                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all ${activeTab === 'teams'
-                                    ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400'
-                                    : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'
-                                    }`}
-                            >
-                                <Users className="w-5 h-5" />
-                                จัดทีม (Teams)
-                            </button>
-                        </>
+
+                    {hasCharacters && (
+                        <button
+                            onClick={() => setActiveTab('characters')}
+                            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all ${activeTab === 'characters'
+                                ? 'bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400'
+                                : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'
+                                }`}
+                        >
+                            <Info className="w-5 h-5" />
+                            {characterLabel}
+                        </button>
+                    )}
+
+                    {hasPets && (
+                        <button
+                            onClick={() => setActiveTab('pets')}
+                            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all ${activeTab === 'pets'
+                                ? 'bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400'
+                                : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'
+                                }`}
+                        >
+                            <PawPrint className="w-5 h-5" />
+                            สัตว์เลี้ยง (Pets)
+                        </button>
+                    )}
+
+                    {hasTeams && (
+                        <button
+                            onClick={() => setActiveTab('teams')}
+                            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all ${activeTab === 'teams'
+                                ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400'
+                                : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'
+                                }`}
+                        >
+                            <Users className="w-5 h-5" />
+                            จัดทีม (Teams)
+                        </button>
                     )}
                 </nav>
             </div>
@@ -125,24 +142,29 @@ export default function GameCommunity({ game }: { game: Game }) {
                     </div>
                 )}
 
-                {activeTab === 'characters' && (
+                {activeTab === 'characters' && hasCharacters && (
                     <div className="animate-fade-in">
                         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">{characterHeader}</h2>
-                        <CharacterList gameId={game.id} />
+                        <CharacterList gameId={game.id} tableName={characterTableName} />
                     </div>
                 )}
 
-                {activeTab === 'pets' && !shouldHideFeatures && (
+                {activeTab === 'pets' && hasPets && (
                     <div className="animate-fade-in">
                         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">ฐานข้อมูลสัตว์เลี้ยง</h2>
-                        <PetList gameId={game.id} />
+                        <PetList gameId={game.id} tableName={petTableName} />
                     </div>
                 )}
 
-                {activeTab === 'teams' && !shouldHideFeatures && (
+                {activeTab === 'teams' && hasTeams && (
                     <div className="animate-fade-in">
                         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">ระบบจัดทีม (Team Builder)</h2>
-                        <TeamList gameId={game.id} />
+                        <TeamList
+                            gameId={game.id}
+                            tableName={teamTableName}
+                            characterTableName={characterTableName}
+                            petTableName={petTableName}
+                        />
                     </div>
                 )}
             </div>

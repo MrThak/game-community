@@ -9,19 +9,6 @@ interface CharacterCardProps {
 }
 
 export default function CharacterCard({ character, isAdmin, onDelete }: CharacterCardProps) {
-    // Helper to get element color
-    const getElementColor = (element?: string) => {
-        switch (element?.toLowerCase()) {
-            case 'fire': return 'bg-red-500'
-            case 'water': return 'bg-blue-500'
-            case 'earth': return 'bg-green-500'
-            case 'wind': return 'bg-teal-500'
-            case 'dark': return 'bg-purple-900'
-            case 'light': return 'bg-yellow-400'
-            default: return 'bg-gray-500'
-        }
-    }
-
     // Helper to get role icon
     const getRoleIcon = (role?: string) => {
         switch (role?.toLowerCase()) {
@@ -59,12 +46,6 @@ export default function CharacterCard({ character, isAdmin, onDelete }: Characte
                             </div>
                         )}
 
-                        {/* Element Badge */}
-                        {character.element && (
-                            <div className={`absolute top-2 right-2 ${getElementColor(character.element)} text-white text-[10px] uppercase font-bold px-2 py-0.5 rounded-full shadow-lg`}>
-                                {character.element}
-                            </div>
-                        )}
                     </div>
 
                     {/* Info Content */}
@@ -72,15 +53,25 @@ export default function CharacterCard({ character, isAdmin, onDelete }: Characte
                         <h3 className="font-bold text-gray-900 dark:text-white truncate">{character.name}</h3>
 
                         <div className="flex items-center gap-2 mt-2">
-                            {character.rarity && (
-                                <span className="text-[10px] px-1.5 py-0.5 rounded border border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400">
-                                    {character.rarity}
-                                </span>
-                            )}
+
+
                             {character.role && (
                                 <div className="flex items-center gap-1 text-[10px] text-gray-500 dark:text-gray-400">
                                     {getRoleIcon(character.role)}
                                     <span>{character.role}</span>
+                                </div>
+                            )}
+
+                            {character.recommended_stages && character.recommended_stages.length > 0 && (
+                                <div className="flex flex-wrap gap-1 mt-2">
+                                    {character.recommended_stages.slice(0, 3).map((stage, i) => (
+                                        <span key={i} className="text-[9px] px-1.5 py-0.5 rounded bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-300 border border-blue-100 dark:border-blue-800">
+                                            {stage}
+                                        </span>
+                                    ))}
+                                    {character.recommended_stages.length > 3 && (
+                                        <span className="text-[9px] text-gray-400">+{character.recommended_stages.length - 3}</span>
+                                    )}
                                 </div>
                             )}
                         </div>

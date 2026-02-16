@@ -10,9 +10,10 @@ import { useAdmin } from '@/hooks/useAdmin'
 interface PetFormProps {
     gameId: string
     petId?: string // If present, it's edit mode
+    tableName?: string
 }
 
-export default function PetForm({ gameId, petId }: PetFormProps) {
+export default function PetForm({ gameId, petId, tableName = 'pets' }: PetFormProps) {
     const router = useRouter()
     const { isAdmin, loading: adminLoading } = useAdmin()
 
@@ -33,7 +34,7 @@ export default function PetForm({ gameId, petId }: PetFormProps) {
 
         const fetchPet = async () => {
             const { data, error } = await supabase
-                .from('pets')
+                .from(tableName)
                 .select('*')
                 .eq('id', petId)
                 .single()
@@ -49,7 +50,7 @@ export default function PetForm({ gameId, petId }: PetFormProps) {
         }
 
         fetchPet()
-    }, [petId, gameId, router])
+    }, [petId, gameId, router, tableName])
 
     // Redirect if not admin (client-side protection)
     useEffect(() => {
@@ -67,7 +68,7 @@ export default function PetForm({ gameId, petId }: PetFormProps) {
             if (petId) {
                 // Update
                 const { error } = await supabase
-                    .from('pets')
+                    .from(tableName)
                     .update(formData)
                     .eq('id', petId)
 
@@ -76,7 +77,7 @@ export default function PetForm({ gameId, petId }: PetFormProps) {
             } else {
                 // Create
                 const { error } = await supabase
-                    .from('pets')
+                    .from(tableName)
                     .insert([{ ...formData, game_id: gameId }])
 
                 if (error) throw error

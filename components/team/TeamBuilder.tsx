@@ -7,7 +7,7 @@ import { Search, Save, X, ChevronUp, ChevronDown, UserPlus, Trash2, Loader2 } fr
 import { getGameConfig } from '@/lib/gameConfig'
 import { Pet } from '@/types/pet'
 
-export default function TeamBuilder({ gameId, onTeamCreated }: { gameId: string, onTeamCreated: () => void }) {
+export default function TeamBuilder({ gameId, tableName, characterTableName, petTableName, onTeamCreated }: { gameId: string, tableName: string, characterTableName: string, petTableName: string, onTeamCreated: () => void }) {
     // State
     const [name, setName] = useState('')
     const [mode, setMode] = useState<'Arena' | 'GuildWar'>('Arena')
@@ -29,15 +29,16 @@ export default function TeamBuilder({ gameId, onTeamCreated }: { gameId: string,
 
     useEffect(() => {
         const fetchData = async () => {
+            if (!characterTableName || !petTableName) return
             const [charRes, petRes] = await Promise.all([
-                supabase.from('characters').select('*').eq('game_id', gameId),
-                supabase.from('pets').select('*').eq('game_id', gameId)
+                supabase.from(characterTableName).select('*').eq('game_id', gameId).order('name', { ascending: true }),
+                supabase.from(petTableName).select('*').eq('game_id', gameId).order('name', { ascending: true })
             ])
             setCharacters(charRes.data || [])
             setPets(petRes.data || [])
         }
         fetchData()
-    }, [gameId])
+    }, [gameId, characterTableName, petTableName])
 
     // Handlers
     const addToFormation = (char: Character, row: 'front' | 'back') => {
@@ -80,7 +81,7 @@ export default function TeamBuilder({ gameId, onTeamCreated }: { gameId: string,
             const { data: { session } } = await supabase.auth.getSession()
             if (!session) return alert('กรุณาเข้าสู่ระบบก่อน')
 
-            const { error: insertError } = await supabase.from('teams').insert([{
+            const { error: insertError } = await supabase.from(tableName).insert([{
                 name,
                 mode,
                 game_id: gameId,
