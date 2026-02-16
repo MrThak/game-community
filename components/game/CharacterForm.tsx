@@ -258,7 +258,7 @@ export default function CharacterForm({ gameId, characterId, tableName = 'charac
                             <textarea
                                 value={formData.normal_attack || ''}
                                 onChange={e => setFormData({ ...formData, normal_attack: e.target.value })}
-                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 bg-transparent h-24"
+                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 bg-transparent min-h-[150px]"
                                 placeholder="รายละเอียดการโจมตีปกติ..."
                             />
                         </div>
@@ -270,7 +270,7 @@ export default function CharacterForm({ gameId, characterId, tableName = 'charac
                             <textarea
                                 value={formData.skill_1 || ''}
                                 onChange={e => setFormData({ ...formData, skill_1: e.target.value })}
-                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 bg-transparent h-24"
+                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 bg-transparent min-h-[150px]"
                                 placeholder="รายละเอียดสกิล 1..."
                             />
                         </div>
@@ -282,7 +282,7 @@ export default function CharacterForm({ gameId, characterId, tableName = 'charac
                             <textarea
                                 value={formData.skill_2 || ''}
                                 onChange={e => setFormData({ ...formData, skill_2: e.target.value })}
-                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 bg-transparent h-24"
+                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 bg-transparent min-h-[150px]"
                                 placeholder="รายละเอียดสกิล 2..."
                             />
                         </div>
@@ -294,7 +294,7 @@ export default function CharacterForm({ gameId, characterId, tableName = 'charac
                             <textarea
                                 value={formData.passive || ''}
                                 onChange={e => setFormData({ ...formData, passive: e.target.value })}
-                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 bg-transparent h-24"
+                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 bg-transparent min-h-[150px]"
                                 placeholder="รายละเอียดสกิลติดตัว..."
                             />
                         </div>

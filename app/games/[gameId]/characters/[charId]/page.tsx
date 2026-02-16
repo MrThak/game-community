@@ -101,7 +101,7 @@ export default async function CharacterDetailPage({ params }: { params: Promise<
                         {character.description && (
                             <div className="bg-white dark:bg-gray-900 p-8 rounded-3xl border border-gray-200 dark:border-gray-800 shadow-sm">
                                 <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">เกริ่นนำตัวละคร</h2>
-                                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                                <p className="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">
                                     {character.description}
                                 </p>
                             </div>
@@ -122,7 +122,7 @@ export default async function CharacterDetailPage({ params }: { params: Promise<
                                     </div>
                                     <div>
                                         <h4 className="font-bold text-gray-900 dark:text-white text-sm mb-1 uppercase tracking-wider">โจมตีปกติ</h4>
-                                        <p className="text-gray-600 dark:text-gray-400 text-sm">{character.normal_attack || 'ยังไม่มีข้อมูล'}</p>
+                                        <p className="text-gray-600 dark:text-gray-400 text-sm whitespace-pre-wrap">{character.normal_attack || 'ยังไม่มีข้อมูล'}</p>
                                     </div>
                                 </div>
 
@@ -134,7 +134,7 @@ export default async function CharacterDetailPage({ params }: { params: Promise<
                                         </div>
                                         <div>
                                             <h4 className="font-bold text-blue-600 dark:text-blue-400 text-sm mb-1 uppercase tracking-wider">สกิล 1</h4>
-                                            <p className="text-gray-600 dark:text-gray-400 text-sm">{character.skill_1 || 'ยังไม่มีข้อมูล'}</p>
+                                            <p className="text-gray-600 dark:text-gray-400 text-sm whitespace-pre-wrap">{character.skill_1 || 'ยังไม่มีข้อมูล'}</p>
                                         </div>
                                     </div>
 
@@ -144,7 +144,7 @@ export default async function CharacterDetailPage({ params }: { params: Promise<
                                         </div>
                                         <div>
                                             <h4 className="font-bold text-purple-600 dark:text-purple-400 text-sm mb-1 uppercase tracking-wider">สกิล 2</h4>
-                                            <p className="text-gray-600 dark:text-gray-400 text-sm">{character.skill_2 || 'ยังไม่มีข้อมูล'}</p>
+                                            <p className="text-gray-600 dark:text-gray-400 text-sm whitespace-pre-wrap">{character.skill_2 || 'ยังไม่มีข้อมูล'}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -156,7 +156,7 @@ export default async function CharacterDetailPage({ params }: { params: Promise<
                                     </div>
                                     <div>
                                         <h4 className="font-bold text-yellow-600 dark:text-yellow-400 text-sm mb-1 uppercase tracking-wider">แพสซีฟ</h4>
-                                        <p className="text-gray-600 dark:text-gray-400 text-sm">{character.passive || 'ยังไม่มีข้อมูล'}</p>
+                                        <p className="text-gray-600 dark:text-gray-400 text-sm whitespace-pre-wrap">{character.passive || 'ยังไม่มีข้อมูล'}</p>
                                     </div>
                                 </div>
                             </div>
@@ -170,7 +170,7 @@ export default async function CharacterDetailPage({ params }: { params: Promise<
                                     อุปกรณ์แนะนำ
                                 </h2>
                                 <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
-                                    <p className="text-lg leading-relaxed">
+                                    <p className="text-lg leading-relaxed whitespace-pre-wrap">
                                         {character.recommended_set || 'ทีมงานกำลังรวบรวมข้อมูลเซตแนะนำสำหรับตัวละครนี้'}
                                     </p>
                                 </div>
