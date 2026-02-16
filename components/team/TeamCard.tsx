@@ -2,6 +2,7 @@ import { Users, Shield, Sword, Crown } from 'lucide-react'
 import Link from 'next/link'
 
 export interface Team {
+    game_id: string
     id: string
     name: string
     description?: string
@@ -29,7 +30,7 @@ export default function TeamCard({ team }: { team: Team }) {
     }
 
     return (
-        <Link href={`/teams/${team.id}`} className="block group">
+        <Link href={`/games/${team.game_id}/teams/${team.id}`} className="block group">
             <div className="bg-white dark:bg-gray-900 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-lg transition-all duration-300">
                 {/* Header */}
                 <div className="p-4 border-b border-gray-100 dark:border-gray-800 flex justify-between items-start">
