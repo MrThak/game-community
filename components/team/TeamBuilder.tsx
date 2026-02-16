@@ -7,14 +7,14 @@ import { Search, Save, X, ChevronUp, ChevronDown, UserPlus, Trash2, Loader2 } fr
 import { getGameConfig } from '@/lib/gameConfig'
 import { Pet } from '@/types/pet'
 
-export default function TeamBuilder({ gameId, tableName, characterTableName, petTableName, onTeamCreated }: { gameId: string, tableName: string, characterTableName: string, petTableName: string, onTeamCreated: () => void }) {
+export default function TeamBuilder({ gameId, tableName, characterTableName, petTableName, onTeamCreated, initialData }: { gameId: string, tableName: string, characterTableName: string, petTableName: string, onTeamCreated: () => void, initialData?: any }) {
     // State
-    const [name, setName] = useState('')
-    const [mode, setMode] = useState<'Arena' | 'GuildWar'>('Arena')
+    const [name, setName] = useState(initialData?.name || '')
+    const [mode, setMode] = useState<'Arena' | 'GuildWar'>(initialData?.mode || 'Arena')
     const [characters, setCharacters] = useState<Character[]>([])
     const [pets, setPets] = useState<Pet[]>([])
     const [searchQuery, setSearchQuery] = useState('')
-    const [petId, setPetId] = useState<string | null>(null)
+    const [petId, setPetId] = useState<string | null>(initialData?.pet_id || null)
     const [tab, setTab] = useState<'heroes' | 'pets'>('heroes')
 
     // Formation State
@@ -34,11 +34,25 @@ export default function TeamBuilder({ gameId, tableName, characterTableName, pet
                 supabase.from(characterTableName).select('*').eq('game_id', gameId).order('name', { ascending: true }),
                 supabase.from(petTableName).select('*').eq('game_id', gameId).order('name', { ascending: true })
             ])
-            setCharacters(charRes.data || [])
+            const allChars = charRes.data || []
+            setCharacters(allChars)
             setPets(petRes.data || [])
+
+            // If editing, populate formation
+            if (initialData?.formation) {
+                // Map image URLs back to characters if possible, or just mock them if we don't have them
+                // Storing image URLs directly makes it tricky to map back to Character objects
+                // In TeamBuilder, we need Character objects for the UI.
+                // We'll try to find character objects matching the images.
+                const findCharsByImages = (urls: string[]) => {
+                    return urls.map(url => allChars.find(c => c.image_url === url)).filter(Boolean) as Character[]
+                }
+                setFrontRow(findCharsByImages(initialData.formation.front || []))
+                setBackRow(findCharsByImages(initialData.formation.back || []))
+            }
         }
         fetchData()
-    }, [gameId, characterTableName, petTableName])
+    }, [gameId, characterTableName, petTableName, initialData])
 
     // Handlers
     const addToFormation = (char: Character, row: 'front' | 'back') => {
@@ -76,30 +90,48 @@ export default function TeamBuilder({ gameId, tableName, characterTableName, pet
 
         setIsSubmitting(true)
         try {
-            // Wait... we need user_id. 
-            // Quick fix: fetch user session
             const { data: { session } } = await supabase.auth.getSession()
             if (!session) return alert('กรุณาเข้าสู่ระบบก่อน')
 
-            const { error: insertError } = await supabase.from(tableName).insert([{
+            const teamData = {
                 name,
                 mode,
                 game_id: gameId,
                 user_id: session.user.id,
                 username: session.user.user_metadata?.full_name || 'Anonymous',
                 formation: {
-                    front: frontRow.map(c => c.image_url || ''), // Store Images for simple display
+                    front: frontRow.map(c => c.image_url || ''),
                     back: backRow.map(c => c.image_url || '')
-                    // Storing Image URLs directly in JSON for this demo to make TeamCard rendering easier without joins
                 },
                 pet_id: petId,
                 pet_image_url: selectedPet?.image_url
-            }])
+            }
 
-            if (insertError) throw insertError
+            let error
+            if (initialData?.id) {
+                // Update
+                const { error: updateError } = await supabase
+                    .from(tableName)
+                    .update(teamData)
+                    .eq('id', initialData.id)
+                error = updateError
+            } else {
+                // Insert
+                const { error: insertError } = await supabase
+                    .from(tableName)
+                    .insert([teamData])
+                error = insertError
+            }
 
-            alert('บันทึกทีมสำเร็จ!')
-            onTeamCreated()
+            if (error) throw error
+
+            alert(initialData?.id ? 'อัปเดตทีมสำเร็จ!' : 'บันทึกทีมสำเร็จ!')
+
+            if (initialData?.id) {
+                window.location.href = `/games/${gameId}/teams/${initialData.id}`
+            } else {
+                onTeamCreated()
+            }
         } catch (error: any) {
             console.error('Save failed:', error)
             alert(`บันทึกไม่สำเร็จ: ${error.message}`)
