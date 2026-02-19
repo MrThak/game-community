@@ -1,13 +1,16 @@
--- Create a table for public profiles using Supabase patterns
+-- 🚨 RE-RUN THIS SCRIPT TO FIX THE COLUMN ERROR
+-- We drop the table first to ensure a clean slate (since the previous version had the wrong column name)
+DROP TABLE IF EXISTS public.profiles CASCADE;
+
+-- Create a table for public profiles
 create table if not exists public.profiles (
   id uuid references auth.users(id) on delete cascade not null primary key,
-  updated_at timestamp with time zone,
-  username text unique,
-  full_name text,
+  updated_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  display_name text, -- Changed from full_name to match code
   avatar_url text,
   website text,
 
-  constraint username_length check (char_length(username) >= 3)
+  constraint username_length check (char_length(display_name) >= 3)
 );
 
 -- Set up Row Level Security (RLS)
@@ -25,18 +28,19 @@ create policy "Users can update own profile."
   on profiles for update
   using ( auth.uid() = id );
 
--- Optional: Configure a trigger to automatically create a profile for new users
--- This matches the Supabase starter guide pattern
+-- Trigger to automatically create a profile for new users
 create or replace function public.handle_new_user()
 returns trigger as $$
 begin
-  insert into public.profiles (id, full_name, avatar_url)
+  insert into public.profiles (id, display_name, avatar_url)
   values (new.id, new.raw_user_meta_data->>'full_name', new.raw_user_meta_data->>'avatar_url');
   return new;
 end;
 $$ language plpgsql security definer;
 
 -- Trigger the function every time a user is created
-create or replace trigger on_auth_user_created
+-- Drop trigger if exists to avoid duplication errors during re-runs
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
+create trigger on_auth_user_created
   after insert on auth.users
   for each row execute procedure public.handle_new_user();
