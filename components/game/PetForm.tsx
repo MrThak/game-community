@@ -23,7 +23,7 @@ export default function PetForm({ gameId, petId, tableName = 'pets' }: PetFormPr
     const [formData, setFormData] = useState<Partial<Pet>>({
         name: '',
         game_id: gameId,
-        rarity: 'Legendary',
+        rarity: 'ตำนาน (Legendary)',
         image_url: '',
         description: '',
     })
@@ -140,10 +140,10 @@ export default function PetForm({ gameId, petId, tableName = 'pets' }: PetFormPr
                                 onChange={e => setFormData({ ...formData, rarity: e.target.value })}
                                 className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 bg-transparent"
                             >
-                                <option value="Mythic">Mythic</option>
-                                <option value="Legendary">Legendary</option>
-                                <option value="Epic">Epic</option>
-                                <option value="Rare">Rare</option>
+                                <option value="ตำนาน (Legendary)">ตำนาน (Legendary)</option>
+                                <option value="หายาก (Rare)">หายาก (Rare)</option>
+                                <option value="ระดับสูง (High)">ระดับสูง (High)</option>
+                                <option value="ทั่วไป (Normal)">ทั่วไป (Normal)</option>
                             </select>
                         </div>
 

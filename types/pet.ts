@@ -5,5 +5,5 @@ export interface Pet {
     game_id: string
     image_url?: string
     description?: string
-    rarity?: 'Mythic' | 'Legendary' | 'Epic' | 'Rare' | string
+    rarity?: 'ตำนาน (Legendary)' | 'หายาก (Rare)' | 'ระดับสูง (High)' | 'ทั่วไป (Normal)' | 'Mythic' | 'Legendary' | 'Epic' | 'Rare' | string
 }
