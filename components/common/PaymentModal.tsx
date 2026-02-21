@@ -14,21 +14,22 @@ export default function PaymentModal({ isOpen, onClose }: PaymentModalProps) {
     const [method, setMethod] = React.useState<'promptpay' | 'truemoney'>('promptpay')
     const [isZoomed, setIsZoomed] = React.useState(false)
 
-    const DATA: Record<'promptpay' | 'truemoney', { acc: string, bank: string, name: string, image: string, label: string, bank_acc?: string }> = {
+    const DATA = {
         promptpay: {
-            acc: '095-229-5405',
-            bank_acc: '505-2-91460-3',
+            acc: '505-2-91460-3',
             bank: 'ไทยพาณิชย์ (SCB)',
             name: 'ทักษิณ ขจัดโรคา',
             image: '/payment-qr.jpg.jpg',
-            label: 'พร้อมเพย์ (PromptPay)'
+            label: 'สแกน QR Code พร้อมเพย์',
+            showAcc: true
         },
         truemoney: {
-            acc: '095-229-5405',
+            acc: '-',
             bank: 'TrueMoney Wallet',
             name: 'ทักษิณ ขจัดโรคา',
             image: '/truemoney-qr.png.png',
-            label: 'ทรูมันนี่ วอลเล็ท'
+            label: 'สแกน QR Code ทรูมันนี่',
+            showAcc: false
         }
     }
 
@@ -37,6 +38,7 @@ export default function PaymentModal({ isOpen, onClose }: PaymentModalProps) {
     if (!isOpen) return null
 
     const handleCopy = () => {
+        if (!current.showAcc) return
         navigator.clipboard.writeText(current.acc)
         setCopied(true)
         setTimeout(() => setCopied(false), 2000)
@@ -98,32 +100,33 @@ export default function PaymentModal({ isOpen, onClose }: PaymentModalProps) {
                         <p className="text-[10px] text-gray-400 text-center mt-2 font-medium">🔍 คลิกเพื่อขยายใหญ่</p>
                     </div>
 
-                    <div className="bg-slate-800/50 rounded-xl p-4 border border-blue-500/20">
-                        <div className="flex items-center justify-between mb-2">
-                            <span className="text-gray-400 text-sm">
-                                {method === 'truemoney' ? 'เบอร์วอลเล็ท (Phone No.)' : 'เลขบัญชี (PromptPay / Bank)'}
-                            </span>
-                        </div>
-                        <div className="flex items-center gap-2 bg-slate-950 p-3 rounded-lg border border-slate-700">
-                            <code className="flex-1 text-lg font-mono text-blue-400">{current.acc}</code>
-                            <button
-                                onClick={handleCopy}
-                                className="p-2 hover:bg-slate-800 rounded-lg transition-colors text-gray-400 hover:text-white"
-                                title="Copy Number"
-                            >
-                                {copied ? <Check className="w-5 h-5 text-green-500" /> : <Copy className="w-5 h-5" />}
-                            </button>
-                        </div>
-                        <div className="mt-3 text-sm text-gray-400 space-y-2">
-                            <p>🏦 {current.bank}</p>
-                            {current.bank_acc && <p>💳 เลขบัญชี: {current.bank_acc}</p>}
-                            <p>👤 {current.name}</p>
-                            <div className="pt-2 border-t border-blue-500/10 mt-2">
-                                <p className="text-blue-400 font-medium">💰 แนะนำจำนวนเงิน:</p>
-                                <p className="text-xs">ช่วยค่ากาแฟคนทำเว็บ 20, 50, 100 บาท หรือตามศเรทธาครับ</p>
+                    {current.showAcc && (
+                        <div className="bg-slate-800/50 rounded-xl p-4 border border-blue-500/20">
+                            <div className="flex items-center justify-between mb-2">
+                                <span className="text-gray-400 text-sm">
+                                    เลขบัญชี (Bank Account)
+                                </span>
+                            </div>
+                            <div className="flex items-center gap-2 bg-slate-950 p-3 rounded-lg border border-slate-700">
+                                <code className="flex-1 text-lg font-mono text-blue-400">{current.acc}</code>
+                                <button
+                                    onClick={handleCopy}
+                                    className="p-2 hover:bg-slate-800 rounded-lg transition-colors text-gray-400 hover:text-white"
+                                    title="Copy Number"
+                                >
+                                    {copied ? <Check className="w-5 h-5 text-green-500" /> : <Copy className="w-5 h-5" />}
+                                </button>
+                            </div>
+                            <div className="mt-3 text-sm text-gray-400 space-y-2">
+                                <p>🏦 {current.bank}</p>
+                                <p>👤 {current.name}</p>
+                                <div className="pt-2 border-t border-blue-500/10 mt-2">
+                                    <p className="text-blue-400 font-medium">💰 แนะนำจำนวนเงิน:</p>
+                                    <p className="text-xs">ช่วยค่ากาแฟคนทำเว็บ 20, 50, 100 บาท หรือตามศรัทธาครับ</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    )}
 
                     <div className="mt-6 text-center">
                         <p className="text-xs text-yellow-500/80 mb-4">
