@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 type AdSenseUnitProps = {
     client: string; // e.g., "ca-pub-XXXXXXXXXXXXXXXX"
@@ -10,6 +10,7 @@ type AdSenseUnitProps = {
     style?: React.CSSProperties;
     className?: string; // Add className prop
     label?: string; // Optional label for the placeholder
+    onBlocked?: () => void; // Callback when ad is blocked
 }
 
 export default function AdSenseUnit({
@@ -19,18 +20,61 @@ export default function AdSenseUnit({
     responsive = true,
     style = { display: 'block' },
     className,
-    label = 'Advertisement'
+    label = 'Advertisement',
+    onBlocked
 }: AdSenseUnitProps) {
     const adRef = useRef<HTMLElement>(null)
+    const [isBlocked, setIsBlocked] = useState(false)
 
     useEffect(() => {
+        let isMounted = true;
+
+        // 1. Initialize AdSense
         try {
             // @ts-ignore
             (window.adsbygoogle = window.adsbygoogle || []).push({});
         } catch (err) {
             console.error('AdSense error:', err);
         }
-    }, []);
+
+        // 2. Detect Network/DNS Adblockers
+        fetch('https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js', {
+            method: 'HEAD',
+            mode: 'no-cors',
+            cache: 'no-store'
+        }).catch(() => {
+            if (isMounted) {
+                setIsBlocked(true);
+                if (onBlocked) onBlocked();
+            }
+        });
+
+        // 3. Detect DOM-level Adblockers
+        const checkTimer = setTimeout(() => {
+            if (!isMounted) return;
+            const testAd = document.createElement('div');
+            testAd.className = 'adsbox textAd ad-banner';
+            testAd.style.display = 'block';
+            testAd.style.position = 'absolute';
+            testAd.style.top = '-999px';
+            testAd.style.left = '-999px';
+            document.body.appendChild(testAd);
+
+            setTimeout(() => {
+                if (!isMounted) return;
+                if (testAd.offsetHeight === 0 || window.getComputedStyle(testAd).display === 'none') {
+                    setIsBlocked(true);
+                    if (onBlocked) onBlocked();
+                }
+                testAd.remove();
+            }, 100);
+        }, 1000);
+
+        return () => {
+            isMounted = false;
+            clearTimeout(checkTimer);
+        }
+    }, [onBlocked]);
 
     // If no client ID is provided (dev mode or not setup), show a placeholder
     if (!client || client === 'ca-pub-XXXXXXXXXXXXXXXX') {
@@ -40,6 +84,10 @@ export default function AdSenseUnit({
                 <span className="text-xs">Client ID Missing</span>
             </div>
         )
+    }
+
+    if (isBlocked) {
+        return null; // Don't render anything if blocked, let parent handle it or just disappear
     }
 
     return (

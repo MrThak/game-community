@@ -6,27 +6,25 @@ import PostList from '@/components/feed/PostList'
 import PostForm from '@/components/feed/PostForm'
 import CharacterList from './CharacterList'
 import TeamList from '../team/TeamList'
-import { LayoutDashboard, PenSquare, Info, Gamepad2, Users, PawPrint } from 'lucide-react'
+import EquipmentList from './EquipmentList'
+import { LayoutDashboard, PenSquare, Info, Gamepad2, Users, PawPrint, Shield } from 'lucide-react'
 import PetList from './PetList'
 
 export default function GameCommunity({ game }: { game: Game }) {
-    const [activeTab, setActiveTab] = useState<'feed' | 'create' | 'characters' | 'teams' | 'pets'>('feed')
+    const [activeTab, setActiveTab] = useState<'feed' | 'create' | 'characters' | 'teams' | 'pets' | 'equipment'>('feed')
 
     // Extract table names from metadata
     const tables = game.metadata?.tables || {}
     const characterTableName = tables.characters || ''
     const petTableName = tables.pets || ''
     const teamTableName = tables.teams || ''
+    const equipmentTableName = tables.equipment || ''
 
     // Feature Flags based on metadata (or fallback)
     const hasCharacters = !!characterTableName
     const hasPets = !!petTableName
     const hasTeams = !!teamTableName
-
-    // Compatibility with old "hiddenFeaturesGames" logic (optional, but let's migrate to metadata-driven)
-    // If metadata is empty, fallback? No, let's assume we must populate metadata for new system.
-    // For old games in DB without metadata, they might break.
-    // But since we just created "games" table with defaults, and migrated, we rely on metadata.
+    const hasEquipment = !!equipmentTableName
 
     // Customize labels for specific games
     const isCardGame = game.name === 'Master Duel'
@@ -37,7 +35,7 @@ export default function GameCommunity({ game }: { game: Game }) {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-6xl mx-auto">
             {/* Sidebar (Left Column) */}
             <div className="md:col-span-1 space-y-6">
-                {/* ... existing card ... */}
+                {/* Game Card */}
                 <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-gray-800 text-center relative overflow-hidden group">
                     <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                     <div className="w-24 h-24 mx-auto bg-gray-100 dark:bg-gray-800 rounded-2xl mb-4 flex items-center justify-center overflow-hidden shadow-inner">
@@ -100,6 +98,19 @@ export default function GameCommunity({ game }: { game: Game }) {
                         </button>
                     )}
 
+                    {hasEquipment && (
+                        <button
+                            onClick={() => setActiveTab('equipment')}
+                            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all ${activeTab === 'equipment'
+                                ? 'bg-yellow-50 dark:bg-yellow-900/20 text-yellow-600 dark:text-yellow-400'
+                                : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'
+                                }`}
+                        >
+                            <Shield className="w-5 h-5" />
+                            อุปกรณ์ (Equipment)
+                        </button>
+                    )}
+
                     {hasTeams && (
                         <button
                             onClick={() => setActiveTab('teams')}
@@ -137,7 +148,6 @@ export default function GameCommunity({ game }: { game: Game }) {
                         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">เขียนโพสต์ใหม่</h2>
                         <PostForm gameId={game.id} onPostCreated={() => {
                             // Keep user on create tab, just clear form (handled inside PostForm)
-                            // Maybe trigger a toast here if we had one
                         }} />
                     </div>
                 )}
@@ -153,6 +163,13 @@ export default function GameCommunity({ game }: { game: Game }) {
                     <div className="animate-fade-in">
                         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">ฐานข้อมูลสัตว์เลี้ยง</h2>
                         <PetList gameId={game.id} tableName={petTableName} />
+                    </div>
+                )}
+
+                {activeTab === 'equipment' && hasEquipment && (
+                    <div className="animate-fade-in">
+                        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">ฐานข้อมูลอุปกรณ์</h2>
+                        <EquipmentList gameId={game.id} tableName={equipmentTableName} />
                     </div>
                 )}
 

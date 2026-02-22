@@ -8,6 +8,7 @@ export interface Game {
             characters?: string
             pets?: string
             teams?: string
+            equipment?: string
         }
     }
     status?: 'active' | 'coming_soon' | string
