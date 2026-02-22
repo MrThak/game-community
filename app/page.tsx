@@ -9,8 +9,6 @@ import { useState, useEffect } from 'react'
 
 export default function Home() {
   const [games, setGames] = useState<Game[]>([])
-  const [leftAdBlocked, setLeftAdBlocked] = useState(false);
-  const [rightAdBlocked, setRightAdBlocked] = useState(false);
 
   useEffect(() => {
     const fetchGames = async () => {
@@ -35,23 +33,20 @@ export default function Home() {
       <div className="flex flex-col xl:flex-row justify-between flex-1">
 
         {/* Left Sidebar: Ads */}
-        {!leftAdBlocked && (
-          <aside className="hidden xl:flex w-[300px] shrink-0 p-4 flex-col gap-4 transition-all duration-300">
-            <div className="rounded-xl p-4 min-h-[600px] flex flex-col items-center justify-center text-center sticky top-24 w-full bg-[#050b14]/80 neon-border backdrop-blur-sm">
-              <AdSenseUnit
-                client={process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || ''}
-                slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_LEFT || ''}
-                style={{ display: 'block', width: '160px', height: '600px' }}
-                label="AdSpace (Left)"
-                className="w-full h-full flex items-center justify-center"
-                onBlocked={() => setLeftAdBlocked(true)}
-              />
-            </div>
-          </aside>
-        )}
+        <aside className="hidden xl:flex w-[300px] shrink-0 p-4 flex-col gap-4 transition-all duration-300">
+          <div className="rounded-xl p-4 min-h-[600px] flex flex-col items-center justify-center text-center sticky top-24 w-full bg-[#050b14]/80 neon-border backdrop-blur-sm">
+            <AdSenseUnit
+              client={process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || ''}
+              slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_LEFT || ''}
+              style={{ display: 'block', width: '160px', height: '600px' }}
+              label="AdSpace (Left)"
+              className="w-full h-full flex items-center justify-center"
+            />
+          </div>
+        </aside>
 
         {/* Main Content: Game Grid */}
-        <div className={`flex-1 px-4 py-4 mx-auto w-full transition-all duration-300 ${leftAdBlocked && rightAdBlocked ? 'max-w-[1600px]' : 'max-w-[1920px]'}`}>
+        <div className="flex-1 px-4 py-4 mx-auto w-full transition-all duration-300 max-w-[1920px]">
           <div className="flex items-center justify-between mb-6 pb-4 border-b border-blue-500/20">
             <h2 className="text-xl font-semibold text-white flex items-center gap-2 neon-text">
               <Gamepad2 className="w-6 h-6 text-blue-400" />
@@ -131,21 +126,18 @@ export default function Home() {
         </div>
 
         {/* Right Sidebar: AdSense & Widgets */}
-        {!rightAdBlocked && (
-          <aside className="hidden lg:flex w-[300px] shrink-0 p-4 flex-col gap-6 transition-all duration-300">
-            {/* Ad Placeholder */}
-            <div className="rounded-xl p-4 min-h-[300px] flex flex-col items-center justify-center text-center sticky top-24 w-full bg-[#050b14]/80 neon-border backdrop-blur-sm">
-              <AdSenseUnit
-                client={process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || ''}
-                slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_RIGHT || ''}
-                style={{ display: 'block', width: '300px', height: '250px' }}
-                label="AdSpace (Right)"
-                className="w-full h-full flex items-center justify-center"
-                onBlocked={() => setRightAdBlocked(true)}
-              />
-            </div>
-          </aside>
-        )}
+        <aside className="hidden lg:flex w-[300px] shrink-0 p-4 flex-col gap-6 transition-all duration-300">
+          {/* Ad Placeholder */}
+          <div className="rounded-xl p-4 min-h-[300px] flex flex-col items-center justify-center text-center sticky top-24 w-full bg-[#050b14]/80 neon-border backdrop-blur-sm">
+            <AdSenseUnit
+              client={process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || ''}
+              slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_RIGHT || ''}
+              style={{ display: 'block', width: '300px', height: '250px' }}
+              label="AdSpace (Right)"
+              className="w-full h-full flex items-center justify-center"
+            />
+          </div>
+        </aside>
       </div>
     </div>
   )
