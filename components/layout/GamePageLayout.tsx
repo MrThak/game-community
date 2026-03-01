@@ -12,7 +12,7 @@ export default function GameLayout({ children }: { children: React.ReactNode }) 
                 {/* Left Sidebar (Ads) */}
                 {hasAdSense && (
                     <aside className="hidden xl:flex w-[300px] shrink-0 p-4 flex-col gap-4 transition-all duration-300">
-                        <div className="rounded-xl p-4 min-h-[600px] flex flex-col items-center justify-center text-center sticky top-24 w-full bg-[#050b14]/80 neon-border backdrop-blur-sm">
+                        <div className="min-h-[600px] flex flex-col items-center justify-center text-center sticky top-24 w-full">
                             <AdSenseUnit
                                 client={process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || ''}
                                 slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_LEFT || ''}
@@ -32,7 +32,7 @@ export default function GameLayout({ children }: { children: React.ReactNode }) 
                 {/* Right Sidebar (Ads) */}
                 {hasAdSense && (
                     <aside className="hidden xl:flex w-[300px] shrink-0 p-4 flex-col gap-4 transition-all duration-300">
-                        <div className="rounded-xl p-4 min-h-[250px] flex flex-col items-center justify-center text-center sticky top-24 w-full bg-[#050b14]/80 neon-border backdrop-blur-sm">
+                        <div className="min-h-[250px] flex flex-col items-center justify-center text-center sticky top-24 w-full">
                             <AdSenseUnit
                                 client={process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || ''}
                                 slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_RIGHT || ''}

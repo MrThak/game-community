@@ -36,7 +36,7 @@ export default function Home() {
         {/* Left Sidebar: Ads */}
         {hasAdSense && (
           <aside className="hidden xl:flex w-[300px] shrink-0 p-4 flex-col gap-4 transition-all duration-300">
-            <div className="rounded-xl p-4 min-h-[600px] flex flex-col items-center justify-center text-center sticky top-24 w-full bg-[#050b14]/80 neon-border backdrop-blur-sm">
+            <div className="min-h-[600px] flex flex-col items-center justify-center text-center sticky top-24 w-full">
               <AdSenseUnit
                 client={process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || ''}
                 slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_LEFT || ''}
@@ -132,7 +132,7 @@ export default function Home() {
         {hasAdSense && (
           <aside className="hidden lg:flex w-[300px] shrink-0 p-4 flex-col gap-6 transition-all duration-300">
             {/* Ad Placeholder */}
-            <div className="rounded-xl p-4 min-h-[300px] flex flex-col items-center justify-center text-center sticky top-24 w-full bg-[#050b14]/80 neon-border backdrop-blur-sm">
+            <div className="min-h-[300px] flex flex-col items-center justify-center text-center sticky top-24 w-full">
               <AdSenseUnit
                 client={process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || ''}
                 slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_RIGHT || ''}
