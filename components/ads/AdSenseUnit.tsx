@@ -31,14 +31,9 @@ export default function AdSenseUnit({
         }
     }, []);
 
-    // If no client ID is provided (dev mode or not setup), show a placeholder
+    // If no client ID is provided (dev mode or not setup), return null instead of a placeholder
     if (!client || client === 'ca-pub-XXXXXXXXXXXXXXXX') {
-        return (
-            <div className={`bg-gray-800/20 border-2 border-dashed border-gray-700 rounded-lg flex flex-col items-center justify-center text-gray-500 p-4 ${className}`} style={style}>
-                <span className="text-xs font-semibold uppercase tracking-widest mb-2">{label}</span>
-                <span className="text-xs">Client ID Missing</span>
-            </div>
-        )
+        return null;
     }
 
     return (

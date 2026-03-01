@@ -9,6 +9,7 @@ import { useState, useEffect } from 'react'
 
 export default function Home() {
   const [games, setGames] = useState<Game[]>([])
+  const hasAdSense = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID && process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID !== 'ca-pub-XXXXXXXXXXXXXXXX'
 
   useEffect(() => {
     const fetchGames = async () => {
@@ -33,17 +34,19 @@ export default function Home() {
       <div className="flex flex-col xl:flex-row justify-between flex-1">
 
         {/* Left Sidebar: Ads */}
-        <aside className="hidden xl:flex w-[300px] shrink-0 p-4 flex-col gap-4 transition-all duration-300">
-          <div className="rounded-xl p-4 min-h-[600px] flex flex-col items-center justify-center text-center sticky top-24 w-full bg-[#050b14]/80 neon-border backdrop-blur-sm">
-            <AdSenseUnit
-              client={process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || ''}
-              slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_LEFT || ''}
-              style={{ display: 'block', width: '160px', height: '600px' }}
-              label="AdSpace (Left)"
-              className="w-full h-full flex items-center justify-center"
-            />
-          </div>
-        </aside>
+        {hasAdSense && (
+          <aside className="hidden xl:flex w-[300px] shrink-0 p-4 flex-col gap-4 transition-all duration-300">
+            <div className="rounded-xl p-4 min-h-[600px] flex flex-col items-center justify-center text-center sticky top-24 w-full bg-[#050b14]/80 neon-border backdrop-blur-sm">
+              <AdSenseUnit
+                client={process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || ''}
+                slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_LEFT || ''}
+                style={{ display: 'block', width: '160px', height: '600px' }}
+                label="AdSpace (Left)"
+                className="w-full h-full flex items-center justify-center"
+              />
+            </div>
+          </aside>
+        )}
 
         {/* Main Content: Game Grid */}
         <div className="flex-1 px-4 py-4 mx-auto w-full transition-all duration-300 max-w-[1920px]">
@@ -126,18 +129,20 @@ export default function Home() {
         </div>
 
         {/* Right Sidebar: AdSense & Widgets */}
-        <aside className="hidden lg:flex w-[300px] shrink-0 p-4 flex-col gap-6 transition-all duration-300">
-          {/* Ad Placeholder */}
-          <div className="rounded-xl p-4 min-h-[300px] flex flex-col items-center justify-center text-center sticky top-24 w-full bg-[#050b14]/80 neon-border backdrop-blur-sm">
-            <AdSenseUnit
-              client={process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || ''}
-              slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_RIGHT || ''}
-              style={{ display: 'block', width: '300px', height: '250px' }}
-              label="AdSpace (Right)"
-              className="w-full h-full flex items-center justify-center"
-            />
-          </div>
-        </aside>
+        {hasAdSense && (
+          <aside className="hidden lg:flex w-[300px] shrink-0 p-4 flex-col gap-6 transition-all duration-300">
+            {/* Ad Placeholder */}
+            <div className="rounded-xl p-4 min-h-[300px] flex flex-col items-center justify-center text-center sticky top-24 w-full bg-[#050b14]/80 neon-border backdrop-blur-sm">
+              <AdSenseUnit
+                client={process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || ''}
+                slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_RIGHT || ''}
+                style={{ display: 'block', width: '300px', height: '250px' }}
+                label="AdSpace (Right)"
+                className="w-full h-full flex items-center justify-center"
+              />
+            </div>
+          </aside>
+        )}
       </div>
     </div>
   )
