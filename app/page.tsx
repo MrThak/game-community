@@ -16,6 +16,7 @@ export default function Home() {
       const { data } = await supabase
         .from('games')
         .select('*')
+        .neq('status', 'hidden')
         .order('name', { ascending: true })
       if (data) setGames(data as Game[])
     }

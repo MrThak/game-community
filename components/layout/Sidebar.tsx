@@ -5,7 +5,7 @@ import Link from 'next/link'
 import UserProfileSection from './UserProfileSection'
 
 export default async function Sidebar() {
-    const { data: games } = await supabase.from('games').select('*')
+    const { data: games } = await supabase.from('games').select('*').neq('status', 'hidden')
 
     return (
         <aside className="hidden md:flex flex-col w-64 h-screen border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 p-4 sticky top-0">

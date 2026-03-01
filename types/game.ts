@@ -11,6 +11,6 @@ export interface Game {
             equipment?: string
         }
     }
-    status?: 'active' | 'coming_soon' | string
+    status?: 'active' | 'coming_soon' | 'hidden' | string
     created_at: string
 }
